@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajoiuter une image{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto my-5">
+                <div class="alert alert-secondary">
+                    <div class="alert-heading ">
+                        <h2 class="text-muted text-uppercase mt-2">Ajouter une image </h2>
+                        <hr>
+                        {{ include('pin/_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+{% endblock %}

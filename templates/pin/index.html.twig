@@ -1,0 +1,80 @@
+{% extends "base.html.twig" %}
+    {% block header %}
+        {% include "partials/banniere/banniere.html.twig" %}
+    {% endblock header %}
+    {% block body %}
+    <div style="background-color: #f0f2f5; padding:0; margin:0;">
+        <div class="container pt-4">
+        {% for pin in pins %}
+            <div class=" col-md-6 mx-auto mb-1   ">
+                <div class="card card_pin_show  " >
+                    <div class="card-body ">
+                        <div>
+                            <div class="dropdown">
+                                <button class="float-right" style="border: none; background-color:#ffffff;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-h float-right mt-2" ></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{{ path('pin_edit', {'id': pin.id}) }}">Modifier</a>
+                                    <div class="ml-2">{{ include('pin/_delete_form.html.twig') }}</div>
+                                </div>
+                            </div>
+                            <h4 class="card-title ">{{pin.titre}}</h4>
+                            <p class="card-text">{{pin.description}}</p>
+                            <p class="card-text"><small class="text-muted">Ajouter à {{ pin.updatedAt ? pin.updatedAt|date(' H:i')}}</small></p>
+                            <a href="{{ path('pin_show', {'id': pin.id}) }}">
+                                <img src="{{vich_uploader_asset(pin) | imagine_filter('squared_thumbnail_medium')}}" class="card-img img-fluid rounded"  alt="{{pin.titre}}">
+                            </a>
+                        </div>
+                        <hr class="mb-1">
+                    </div>
+                    <div class="pb-3  mx-5 d-flex justify-content-between">
+                        <a href=" {{path('pin_like', {'id': pin.id})}} " class="btn btn-link js-likes ">
+                            {% if app.user and pin.isLikedByUser(app.user) %}
+                                <i class="fas fa-thumbs-up"></i>
+                            {% else %}
+                                <i class="far fa-thumbs-up"></i>
+                            {% endif %}
+                            <span class="js-likes"> {{pin.jaimes | length}} </span>
+                            <span class="js-label">J'aime</span>
+                        </a>
+                        
+                        {% if pin.commentaire | length > 0  %}
+                            <a href=" {{path('pin_show', {'id': pin.id})}} ">
+                                <i class="far fa-comment"><span class="pl-2">{{pin.commentaire | length}} Commenter</span></i>
+                            </a>
+                        {% else %}
+                            <a href=" {{path('pin_show', {'id': pin.id})}} ">
+                                <i class="far fa-comment"><span class="pl-2">Commenter</span></i> 
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="mx-4 ">
+                        
+                        {% for commentaire in pin.commentaire %}
+                        <div >
+                            
+                            <div class="alert alert-secondary mt-2" role="alert">
+                                <small class="font-weight-bold">{{commentaire.user.fullname}}</small><br> 
+                                <blockquote class="blockquote  text-small" style="font-size: 0.9em;">
+                                    {{commentaire.message}}
+                                </blockquote>
+                            </div>
+                            
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+                
+            </div>
+           
+        {% else %}
+       
+            <p>no records found</p>
+            
+        {% endfor %} 
+    
+   </div>
+</div>
+{% endblock body %}

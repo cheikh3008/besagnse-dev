@@ -1,0 +1,65 @@
+body{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+}
+
+.entete-top{
+  margin: 0;
+  padding: 0;
+}
+.img-fluid{
+  margin-bottom: 0;
+}
+.entete-center{
+  background-color: rgb(245, 245, 245);
+  width: 100%;
+  height: 50px;
+  margin: 0;
+  padding: 0;
+}
+.navbar{
+  width: 100%;
+  background-color: #24a0ed;
+  padding: 15px;
+  
+}
+
+.nav-link{
+  margin: 0px;
+  color: #ffffff !important;
+  transition: 0.3s ease-in all;
+  padding: 0 30px;
+  font-size:  20px;
+
+}
+.navbar-nav .profil{
+  text-decoration: none !important;
+   color: #000000 !important;
+  transition: 0.5s  ease-in-out;
+}
+.navbar-nav .profil:hover{
+  text-decoration: none !important;
+ 
+  color: #747272 !important;
+}
+.nav-link:hover{
+  color: #413f3f !important;
+  
+}
+/* .card  {
+  width: 100%;
+  height: 500px;
+  margin-bottom: 20px;
+} */
+.card_pin_show{
+  width: 100%;
+  height:100%;
+}
+a .card-img{
+  width: 100%;
+  height: 420px
+}
+
+

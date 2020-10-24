@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion
+{% endblock %}
+
+{% block body %}
+    
+	<div class="container">
+		<form method="post">
+			<div class="row">
+				<div class="col-md-6 mx-auto my-5">
+					<div class="alert alert-secondary">
+						<div class="alert-heading">
+                            <h1 class="h3 mt-3 mb-3 text-center text-muted ">Connectez vous !</h1>
+                            <hr>
+							{% if error %}
+								<div class="alert alert-danger text-center">
+									Nom d'utilisateur ou mot de passe incorrect !
+								</div>
+							{% endif %}
+							
+							<label for="inputUsername" class="text-muted ">Username</label>
+							<input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control " autofocus placeholder="Tapez le nom d'utilisateur">
+							<label for="inputPassword" class="mt-2 text-muted  ">Password</label>
+							<input type="password" name="password" id="inputPassword" placeholder="Tapez le mot de passe" class="form-control">
+
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+							<div class="custom-control custom-checkbox mt-3">
+								<input type="checkbox" class="custom-control-input" name="_remember_me" id="customCheck1">
+								<label class="custom-control-label text-muted " for="customCheck1">Gardez ma session active</label>
+							</div>
+                            <button class="btn btn-primary btn-block mt-3 mb-5" type="submit">Se connecter</button>
+                            
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+{% endblock %}
