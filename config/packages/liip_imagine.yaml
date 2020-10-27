@@ -12,7 +12,7 @@ liip_imagine:
         squared_thumbnail_medium:
             filters:
                 thumbnail:
-                    size:          [780, 520]
+                    size:          [500, 500]
                     mode:          outbound
         squared_thumbnail_large:
             quality: 75

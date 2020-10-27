@@ -2,18 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\PasswordUpdate;
+use App\Entity\Pin;
 use App\Entity\User;
 use App\Form\EditProfileType;
+use App\Entity\PasswordUpdate;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationFormType;
+use App\Repository\PinRepository;
+use Symfony\Component\Form\FormError;
 use App\Security\FormLoginAuthenticator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegistrationController extends AbstractController
@@ -106,5 +108,16 @@ class RegistrationController extends AbstractController
         return $this->render('registration/password-update.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/my-account", name="app_my_account")
+     */
+    public function myAccount(PinRepository $pinRepository): Response
+    {
+        return $this->render('registration/my-account.html.twig', [
+            'user' =>  $user = $this->getUser(),
+            'pins' => $pinRepository->findBy(array('user' => $user), array('updatedAt' => 'desc')),
+        ]); 
     }
 }

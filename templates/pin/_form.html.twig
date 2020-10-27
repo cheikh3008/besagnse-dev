@@ -1,6 +1,7 @@
 {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
-    {{ form_row(form.titre) }}
     {{ form_row(form.imageFile) }}
+    {{ form_row(form.categorie , {label_attr: {class: 'radio-custom '}}) }}
+    {{ form_row(form.titre) }}
     {{ form_row(form.description) }}
     <button class="btn btn-primary btn-block mb-3">{{ button_label|default('Ajouter ') }}</button>
 {{ form_end(form) }}

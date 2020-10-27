@@ -16,11 +16,12 @@
                         <h5 class="card-title">{{ pin.titre }}</h5>
                         <p class="card-text">{{ pin.description }}</p>
                         <p class="card-text">
-                            <small class="text-muted"> Derniére mise à jour : {{ pin.createdAt ? pin.createdAt|date('Y-m-d H:i:s') : '' }}
+                            <small class="text-muted">
+                                Publié le {{pin.updatedAt| date('d/m/Y')}} à {{pin.updatedAt| date('H:i')}}
                             </small>
                         </p>
                         <hr>
-                        <div class="pb-3  mx-1 d-flex justify-content-between">
+                        <div class="pb-3  mx-2 d-flex justify-content-between">
                             <div>
                                 <a href=" {{path('pin_like', {'id': pin.id})}} " class="btn btn-link js-likes ">
                                     {% if app.user and pin.isLikedByUser(app.user) %}
@@ -32,9 +33,13 @@
                                     <span class="js-label">J'aime</span>
                                 </a>
                             </div>
-                            <div >
-                                {{commentaire | length}}
-                                <i class="far fa-comment" for="inputUsername"><span class="pl-2">Commenter</span></i>
+                            <div class="mt-2" >
+                                {% if app.user and pin.isCommentByUser(app.user) %}
+
+                                <span >{{commentaire | length}}</span>
+                                <i class="far fa-comment"><span class="pl-1">Commenter</span></i>
+                                
+                                {% endif %}
 
                             </div>
                         

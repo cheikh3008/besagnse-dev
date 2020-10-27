@@ -21,7 +21,11 @@
                             </div>
                             <h4 class="card-title ">{{pin.titre}}</h4>
                             <p class="card-text">{{pin.description}}</p>
-                            <p class="card-text"><small class="text-muted">Ajouter à {{ pin.updatedAt ? pin.updatedAt|date(' H:i')}}</small></p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    Publié le {{pin.updatedAt| date('d/m/Y')}} à {{pin.updatedAt| date('H:i')}}
+                                </small>
+                            </p>
                             <a href="{{ path('pin_show', {'id': pin.id}) }}">
                                 <img src="{{vich_uploader_asset(pin) | imagine_filter('squared_thumbnail_medium')}}" class="card-img img-fluid rounded"  alt="{{pin.titre}}">
                             </a>
@@ -38,18 +42,22 @@
                             <span class="js-likes"> {{pin.jaimes | length}} </span>
                             <span class="js-label">J'aime</span>
                         </a>
-                        
-                        {% if pin.commentaire | length > 0  %}
-                            <a href=" {{path('pin_show', {'id': pin.id})}} ">
+                        <a href="{{path('pin_comment', {'id': pin.id})}}" class="btn btn-link js-comment ">
+                            <i class="far fa-comment">
+                                
+                            </i>
+                        </a>
+                        {# {% if pin.commentaire | length > 0  %}
+                            <a href=" {{path('pin_show', {'id': pin.id})}} " class="mt-2">
                                 <i class="far fa-comment"><span class="pl-2">{{pin.commentaire | length}} Commenter</span></i>
                             </a>
                         {% else %}
                             <a href=" {{path('pin_show', {'id': pin.id})}} ">
                                 <i class="far fa-comment"><span class="pl-2">Commenter</span></i> 
                             </a>
-                        {% endif %}
+                        {% endif %} #}
                     </div>
-                    <div class="mx-4 ">
+                    <div class="mx-4  ">
                         
                         {% for commentaire in pin.commentaire %}
                         <div >

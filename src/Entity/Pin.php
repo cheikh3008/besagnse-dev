@@ -31,14 +31,13 @@ class Pin
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
      * @Vich\UploadableField(mapping="pin_image", fileNameProperty="imageName")
-     * 
+     * @Assert\NotBlank(message="L'image est obligatoire .")
      * @var File|null
      */
     private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank(message="Ce champ ne peut pa être vide .")
      */
     private $titre;
 
@@ -60,7 +59,6 @@ class Pin
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Assert\Image
      * @Assert\NotBlank(message="Ce champ ne peut pa être vide .")
      */
     private $imageName;
@@ -69,6 +67,11 @@ class Pin
      * @ORM\OneToMany(targetEntity=Jaime::class, mappedBy="pin")
      */
     private $jaimes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $categorie;
 
 
     
@@ -240,6 +243,18 @@ class Pin
             }
         }
         return false;
+    }
+
+    public function getCategorie(): ?string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?string $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
     }
 
     

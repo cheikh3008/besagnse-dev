@@ -46,7 +46,6 @@ class PinController extends AbstractController
     
     /**
      * @Route("pin/new", name="pin_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_TAILLEUR")
      */
     public function new(Request $request): Response
     {
@@ -98,7 +97,7 @@ class PinController extends AbstractController
 
     /**
      * @Route("pin/{id}/edit", name="pin_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_TAILLEUR")
+     * 
      */
     public function edit(Request $request, Pin $pin): Response
     {
@@ -134,7 +133,7 @@ class PinController extends AbstractController
 
     /**
      * @Route("pin/{id}/like", name="pin_like")
-     *
+     * cette fonction permet de liker un pin
      * @param Pin $pin
      * @param JaimeRepository $jaimeRepository
      * @return Response
@@ -180,5 +179,47 @@ class PinController extends AbstractController
                 'pin' => $pin
             ])
         ], 200);
+    }
+
+    /**
+     * @Route("pin/{id}/comment", name="pin_comment")
+     * cette fonction permet de commenter un pin
+     * @param Pin $pin
+     * @param CommentaireRepository $commentaireRepository
+     * @return Response
+     */
+    public function comment(Pin $pin , Request $request , CommentaireRepository $commentaireRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->json([
+                'code' => 403,
+                'message' => 'Permission non accordéé',
+            ], 403);
+        }
+        $commentaire = new Commentaire();
+        $form = $this->createForm(CommentaireType::class, $commentaire);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $commentaire->setUser($user)
+                        ->setPin($pin);
+            $entityManager->persist($commentaire);
+            $entityManager->flush();
+        }
+        // return $this->json([
+        //     'code' => 200,
+        //     'message' => 'commentaire bien ajouté',
+        //     'commentaires' => $commentaireRepository->count([
+        //         'pin' => $pin,
+        //         'form' => $form
+        //     ])
+        // ], 200);
+        return $this->render('pin/index.html.twig', [
+            'form' => $form->createView(),
+            'pin'  => $pin,
+            'commentaire' => $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc')),
+            
+        ]);
     }
 }

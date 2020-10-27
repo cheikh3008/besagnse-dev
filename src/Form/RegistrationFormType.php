@@ -16,8 +16,14 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class RegistrationFormType extends AbstractType
 {
+    private $role;
+    public function __construct(RoleRepository $role)
+    {
+        $this->role = $role;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $role = $this->role->findBy(array('libelle' => ["ROLE_TAILLEUR", "ROLE_VISITEUR"]));
         $builder
             ->add('prenom', TextType::class, ['attr' => ['placeholder' => 'Tapez votre prénom ']])
             ->add('nom', TextType::class, ['attr' => ['placeholder' => 'Tapez votre nom ']])
@@ -33,7 +39,7 @@ class RegistrationFormType extends AbstractType
             ->add('nomEntreprise', TextType::class, ['attr' => ['placeholder' => 'Tapez votre nom de d\'entreprise ']])
             ->add('adresse', TextType::class, ['attr' => ['placeholder' => 'Tapez votre adresse ']])
             ->add('role', EntityType::class,['class' => Role::class,'choice_label' => 'libelle',
-            'placeholder' => 'Choisir un role',])
+            'placeholder' => 'Choisir un role', 'choices'=> $role])
         ;
     }
 

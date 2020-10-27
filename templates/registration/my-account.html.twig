@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Compte {{app.user.fullname}} {% endblock %}
+
+{% block body %}
+{% for flashError in app.flashes('verify_email_error') %}
+<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+{% endfor %}
+<div >
+    {% include "partials/banniere/banniere.html.twig" %}
+</div>
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-md-3 text-center ">
+            <img src=" {{ asset('/images/C360.jpg') }} " class="rounded-circle " alt="avatar" style="height: 200px; width:200px">
+        </div>
+        <div class="col-md-9 mt-3">
+            <h1> {{app.user.nomEntreprise }} </h1>
+            <h5><i class="fas fa-map-marker-alt"> {{app.user.adresse}} </i></h5>
+            <i class="fas fa-phone-alt"> </i> {{app.user.telephone}} <br>
+            <strong class="mb-2"> {{pins | length}} </strong> publications <br>
+            <strong> {{app.user.fullName}} </strong>
+            <p>Entreprise de couture et formation de design haute couture mode international,
+            kay sagnsei lu tokk nga nguénn feulalé todj fi radiax</p>
+
+            
+        </div>
+    </div>
+    <div class="dropdown-divider"></div>
+    {% for row in pins|batch(3) %}
+    <div class="row ">
+        {% for pin in row %}
+        <div class="col-md-4 ">
+            <div class="card-group ">
+                <div class="card my-1 bg-whight shadow  pin-img">
+                    <div class="mw-100 overflow-hidden">
+                        <a href="{{ path('pin_show', {'id': pin.id}) }}">
+                            <img src=" {{ vich_uploader_asset(pin) }} " class="card-img-top w-100  " alt="{{pin.titre}}" style="height: 350px ;">
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"> {{pin.titre}} </h5>
+                        <p class="card-text">
+                            {{pin.description}}
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                Publié le {{pin.updatedAt| date('d/m/Y')}} à {{pin.updatedAt| date('H:i')}} 
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
