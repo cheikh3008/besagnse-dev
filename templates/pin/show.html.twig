@@ -29,17 +29,14 @@
                                     {% else %}
                                     <i class="far fa-thumbs-up"></i>
                                     {% endif %}
-                                    <span class="js-likes"> {{pin.jaimes | length}} </span>
+                                    <span class="js-likes"> {{pin.jaimes | length > 0}} </span>
                                     <span class="js-label">J'aime</span>
                                 </a>
                             </div>
                             <div class="mt-2" >
-                                {% if app.user and pin.isCommentByUser(app.user) %}
-
-                                <span >{{commentaire | length}}</span>
+                                <span >{{commentaire | length > 0}}</span>
                                 <i class="far fa-comment"><span class="pl-1">Commenter</span></i>
                                 
-                                {% endif %}
 
                             </div>
                         
@@ -48,7 +45,7 @@
                                 
                             </div>
                             <div >
-                                {{ form_start(form) }}
+                                {{ form_start(form , {attr: {'novalidate': 'novalidate'}} ) }}
                                 {{ form_widget(form) }}
                                     <button class="btn btn-primary">Commenter</button>
                                 {{ form_end(form) }}

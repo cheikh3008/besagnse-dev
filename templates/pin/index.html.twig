@@ -43,9 +43,7 @@
                             <span class="js-label">J'aime</span>
                         </a>
                         <a href="{{path('pin_comment', {'id': pin.id})}}" class="btn btn-link js-comment ">
-                            <i class="far fa-comment">
-                                
-                            </i>
+                            <i class="far fa-comment"><span class="pl-2">{{pin.commentaire | length}} Commenter</span></i>
                         </a>
                         {# {% if pin.commentaire | length > 0  %}
                             <a href=" {{path('pin_show', {'id': pin.id})}} " class="mt-2">
