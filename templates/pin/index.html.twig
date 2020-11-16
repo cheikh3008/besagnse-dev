@@ -3,7 +3,8 @@
         {% include "partials/banniere/banniere.html.twig" %}
     {% endblock header %}
     {% block body %}
-    <div style="background-color: #f0f2f5; padding:0; margin:0;">
+    <div style="background-color: #f0f2f5;">
+
         <div class="container pt-4">
         {% for pin in pins %}
             <div class=" col-md-6 mx-auto mb-1   ">
@@ -32,33 +33,34 @@
                         </div>
                         <hr class="mb-1">
                     </div>
-                    <div class="pb-3  mx-5 d-flex justify-content-between">
-                        <a href=" {{path('pin_like', {'id': pin.id})}} " class="btn btn-link js-likes ">
+                    <div class="pb-3  mx-4 d-flex justify-content-between">
+                        <a href=" {{path('pin_like', {'id': pin.id})}} " class="btn btn-link js-like ">
                             {% if app.user and pin.isLikedByUser(app.user) %}
                                 <i class="fas fa-thumbs-up"></i>
                             {% else %}
                                 <i class="far fa-thumbs-up"></i>
                             {% endif %}
-                            <span class="js-likes"> {{pin.jaimes | length}} </span>
+                            <span class="js-likes"> {{pin.jaimes | length > 0}} </span>
                             <span class="js-label">J'aime</span>
                         </a>
-                        <a href="{{path('pin_comment', {'id': pin.id})}}" class="btn btn-link js-comment ">
-                            <i class="far fa-comment"><span class="pl-2">{{pin.commentaire | length}} Commenter</span></i>
-                        </a>
-                        {# {% if pin.commentaire | length > 0  %}
-                            <a href=" {{path('pin_show', {'id': pin.id})}} " class="mt-2">
-                                <i class="far fa-comment"><span class="pl-2">{{pin.commentaire | length}} Commenter</span></i>
-                            </a>
-                        {% else %}
-                            <a href=" {{path('pin_show', {'id': pin.id})}} ">
-                                <i class="far fa-comment"><span class="pl-2">Commenter</span></i> 
-                            </a>
-                        {% endif %} #}
-                    </div>
-                    <div class="mx-4  ">
+                        <span  class="btn btn-link js-comment ">
+                            <i class="far fa-comment"><span class="pl-2">{{pin.commentaire | length > 0}} Commenter</span></i>
+                        </span>
                         
+                    </div>
+                    
+                    <div class="mx-4 ">
+                        <form  method="POST" action="{{path('pin_comment', {'id': pin.id})}}" id="form-comment" >
+                            <div id="commentaire">
+                                <div class="form-group"><label for="message" >Message</label><textarea id="message"
+                                    name="message"  class="form-control"  ></textarea>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary mb-3" type="submit" class="js-comment">Commenter</button>
+                        
+                        </form>
+                            
                         {% for commentaire in pin.commentaire %}
-                        <div >
                             
                             <div class="alert alert-secondary mt-2" role="alert">
                                 <small class="font-weight-bold">{{commentaire.user.fullname}}</small><br> 
@@ -66,8 +68,6 @@
                                     {{commentaire.message}}
                                 </blockquote>
                             </div>
-                            
-                        </div>
                         {% endfor %}
 
                     </div>
@@ -81,6 +81,6 @@
             
         {% endfor %} 
     
-   </div>
-</div>
+        </div>
+    </div>
 {% endblock body %}

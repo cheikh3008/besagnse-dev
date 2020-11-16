@@ -23,7 +23,7 @@
                         <hr>
                         <div class="pb-3  mx-2 d-flex justify-content-between">
                             <div>
-                                <a href=" {{path('pin_like', {'id': pin.id})}} " class="btn btn-link js-likes ">
+                                <a href=" {{path('pin_like', {'id': pin.id})}} " class="btn btn-link js-like ">
                                     {% if app.user and pin.isLikedByUser(app.user) %}
                                     <i class="fas fa-thumbs-up"></i>
                                     {% else %}
@@ -34,8 +34,8 @@
                                 </a>
                             </div>
                             <div class="mt-2" >
-                                <span >{{commentaire | length > 0}}</span>
-                                <i class="far fa-comment"><span class="pl-1">Commenter</span></i>
+                                <span class="js-comment" >{{commentaire | length > 0}}</span>
+                                <i class="far fa-comment"><span class="pl-1 js-label-comment">Commenter</span></i>
                                 
 
                             </div>
@@ -45,10 +45,19 @@
                                 
                             </div>
                             <div >
-                                {{ form_start(form , {attr: {'novalidate': 'novalidate'}} ) }}
+                                {# {{ form_start(form , {attr: {'novalidate': 'novalidate'}} ) }}
                                 {{ form_widget(form) }}
                                     <button class="btn btn-primary">Commenter</button>
-                                {{ form_end(form) }}
+                                {{ form_end(form) }} #}
+                                <form method="POST" action="{{path('pin_comment', {'id': pin.id})}}" id="form-comment">
+                                    <div id="commentaire">
+                                        <div class="form-group"><label for="message">Message</label><textarea id="message" name="message"
+                                                class="form-control" ></textarea>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary mb-3" type="submit" class="js-comment">Commenter</button>
+                                
+                                </form>
                             </div>
                         {% for commentaire in commentaire %}
                         <div >

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Pin;
 use App\Entity\Jaime;
 use App\Form\PinType;
-use App\Form\JaimeType;
 use App\Entity\Commentaire;
 use App\Form\CommentaireType;
 use App\Repository\PinRepository;
@@ -14,8 +13,7 @@ use App\Repository\CommentaireRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -32,11 +30,10 @@ class PinController extends AbstractController
     }
     
     /**
-     * @Route("/", name="app_home", methods={"GET"})
+     * @Route("/", name="app_home", methods={"GET" , "POST"})
      */
     public function index( PinRepository $pinRepository, CommentaireRepository $commentaireRepository): Response
     {
-        $commentaire = new Commentaire();
         return $this->render('pin/index.html.twig', [
             'pins' => $pinRepository->findBy(array(), array('updatedAt' => 'desc')),
             'commentaire' => $commentaireRepository->findBy(array(), array('updatedAt' => 'desc')),
@@ -74,24 +71,10 @@ class PinController extends AbstractController
      */
     public function show(Pin $pin, Request $request, CommentaireRepository $commentaireRepository): Response
     {
-        $userConnect = $this->tokenStorage->getToken()->getUser();
-        $commentaire = new Commentaire();
-        $form = $this->createForm(CommentaireType::class, $commentaire);
-        $form->handleRequest($request);
-        //dd($jaime_existe->getUser()->getId() === $user->getId());
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $commentaire->setUser($userConnect);
-            $commentaire->setPin($pin);
-            $entityManager->persist($commentaire);
-            
-            $entityManager->flush();
-            
-        }
+        
         return $this->render('pin/show.html.twig', [
             'pin'  => $pin,
             'commentaire' => $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc')),
-            'form' => $form->createView()
         ]);
     }
 
@@ -182,13 +165,13 @@ class PinController extends AbstractController
     }
 
     /**
-     * @Route("pin/{id}/comment", name="pin_comment")
+     * @Route("pin/{id}/comment", name="pin_comment" )
      * cette fonction permet de commenter un pin
      * @param Pin $pin
      * @param CommentaireRepository $commentaireRepository
      * @return Response
      */
-    public function comment(Pin $pin , Request $request , CommentaireRepository $commentaireRepository): Response
+    public function comment(Pin $pin , Request $request , CommentaireRepository $commentaireRepository, SerializerInterface $serialize): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -197,29 +180,29 @@ class PinController extends AbstractController
                 'message' => 'Permission non accordéé',
             ], 403);
         }
+        
         $commentaire = new Commentaire();
         $form = $this->createForm(CommentaireType::class, $commentaire);
         $form->handleRequest($request);
+        //return new JsonResponse(array('data' => 'this is a json response'));
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $commentaire->setUser($user)
-                        ->setPin($pin);
+            $commentaire->setUser($user);
+            $commentaire->setPin($pin);
+            $res =  $commentaire->setMessage($request->request->get('message'));
+            dd($res == null);
             $entityManager->persist($commentaire);
             $entityManager->flush();
         }
-        // return $this->json([
-        //     'code' => 200,
-        //     'message' => 'commentaire bien ajouté',
-        //     'commentaires' => $commentaireRepository->count([
-        //         'pin' => $pin,
-        //         'form' => $form
-        //     ])
-        // ], 200);
-        return $this->render('pin/index.html.twig', [
-            'form' => $form->createView(),
-            'pin'  => $pin,
-            'commentaire' => $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc')),
-            
-        ]);
+        $com = $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'));
+        $data = $serialize->serialize($com, 'json', ['groups' => ['normal']]);
+
+        return $this->json([
+            'code' => 200,
+            'message' => 'like bien ajouté',
+            'comment_sms' => $data
+        ], 200);
+        
     }
+    
 }

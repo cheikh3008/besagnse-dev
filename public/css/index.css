@@ -15,24 +15,30 @@ body{
 .entete-center{
   background-color: rgb(245, 245, 245);
   width: 100%;
-  height: 50px;
-  margin: 0;
+  height: 40px;
+  margin: 0 0 10px 0;
   padding: 0;
 }
 .navbar{
   width: 100%;
   background-color: #24a0ed;
-  padding: 15px;
+  padding: 5px;
   
 }
-
+.navbar-brand{
+  color: #ffffff !important;
+  font-weight: bold;
+}
 .nav-link{
   margin: 0px;
   color: #ffffff !important;
   transition: 0.3s ease-in all;
   padding: 0 30px;
-  font-size:  20px;
+  font-size:  15px;
 
+}
+.fa-bars{
+  color: #ffffff !important;
 }
 .navbar-nav .profil{
   text-decoration: none !important;
