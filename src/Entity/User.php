@@ -101,6 +101,11 @@ class User implements UserInterface
      */
     private $jaimes;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Profil::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $profil;
+
     public function __construct()
     {
         $this->jaimes = new ArrayCollection();
@@ -354,6 +359,24 @@ class User implements UserInterface
             if ($jaime->getUser() === $this) {
                 $jaime->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getProfil(): ?Profil
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(?Profil $profil): self
+    {
+        $this->profil = $profil;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = null === $profil ? null : $this;
+        if ($profil->getUser() !== $newUser) {
+            $profil->setUser($newUser);
         }
 
         return $this;

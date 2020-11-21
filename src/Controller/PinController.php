@@ -16,8 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
 
 class PinController extends AbstractController
 {
@@ -32,12 +32,27 @@ class PinController extends AbstractController
     /**
      * @Route("/", name="app_home", methods={"GET" , "POST"})
      */
-    public function index( PinRepository $pinRepository, CommentaireRepository $commentaireRepository): Response
+    public function index( PinRepository $pinRepository, Request $request, CommentaireRepository $commentaireRepository): Response
     {
+        $pin = $pinRepository->findBy(array(), array('updatedAt' => 'DESC'));
+        $data =  $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'));
+        if ($request->isXmlHttpRequest()) {
+            $jsonData = array();
+            $idx = 0;
+            foreach ($data as $values) {
+                $temp = array(
+                    'fullname' => $values->getUser()->getPrenom().' '. $values->getUser()->getNom(),
+                    'message' => $values->getMessage(),
+                    'pin' => $values->getPin()->getId()
+                );
+                $jsonData[$idx++] = $temp;
+            }
+            return new JsonResponse($jsonData);
+        } 
+
         return $this->render('pin/index.html.twig', [
-            'pins' => $pinRepository->findBy(array(), array('updatedAt' => 'desc')),
-            'commentaire' => $commentaireRepository->findBy(array(), array('updatedAt' => 'desc')),
-            
+            'pins' => $pin,
+            'commentaire' => $data
         ]);
     }
     
@@ -74,7 +89,7 @@ class PinController extends AbstractController
         
         return $this->render('pin/show.html.twig', [
             'pin'  => $pin,
-            'commentaire' => $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc')),
+            'commentaire' => $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'), 3),
         ]);
     }
 
@@ -171,7 +186,7 @@ class PinController extends AbstractController
      * @param CommentaireRepository $commentaireRepository
      * @return Response
      */
-    public function comment(Pin $pin , Request $request , CommentaireRepository $commentaireRepository, SerializerInterface $serialize): Response
+    public function comment(Pin $pin , Request $request , CommentaireRepository $commentaireRepository, SerializerInterface $serializer): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -184,25 +199,28 @@ class PinController extends AbstractController
         $commentaire = new Commentaire();
         $form = $this->createForm(CommentaireType::class, $commentaire);
         $form->handleRequest($request);
-        //return new JsonResponse(array('data' => 'this is a json response'));
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $commentaire->setUser($user);
-            $commentaire->setPin($pin);
-            $res =  $commentaire->setMessage($request->request->get('message'));
-            dd($res == null);
-            $entityManager->persist($commentaire);
-            $entityManager->flush();
-        }
-        $com = $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'));
-        $data = $serialize->serialize($com, 'json', ['groups' => ['normal']]);
-
+    
+        $entityManager = $this->getDoctrine()->getManager();
+        $commentaire->setUser($user);
+        $commentaire->setPin($pin);
+        $commentaire->setMessage($request->request->get('message'));
+        $entityManager->persist($commentaire);
+        $entityManager->flush();
+        $commentaires = $commentaireRepository->findByUser($pin->getId());
+        
+        // if ($request->isXmlHttpRequest()) {
+        //     return new JsonResponse([
+        //         $this->renderView('pin/_commentaire.html.twig', [
+        //             'commentaires' => $commentaires
+        //         ])
+        //     ]);
+        // }
         return $this->json([
             'code' => 200,
-            'message' => 'like bien ajouté',
-            'comment_sms' => $data
-        ], 200);
-        
+            'message' => 'like bien ajouté'
+        ]);
+
     }
-    
+
+  
 }

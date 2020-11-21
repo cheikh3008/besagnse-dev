@@ -4,10 +4,10 @@
     {% endblock header %}
     {% block body %}
     <div style="background-color: #f0f2f5;">
-
+        
         <div class="container pt-4">
         {% for pin in pins %}
-            <div class=" col-md-6 mx-auto mb-1   ">
+            <div class=" col-md-6 mx-auto ">
                 <div class="card card_pin_show  " >
                     <div class="card-body ">
                         <div>
@@ -31,9 +31,9 @@
                                 <img src="{{vich_uploader_asset(pin) | imagine_filter('squared_thumbnail_medium')}}" class="card-img img-fluid rounded"  alt="{{pin.titre}}">
                             </a>
                         </div>
-                        <hr class="mb-1">
+                        <hr>
                     </div>
-                    <div class="pb-3  mx-4 d-flex justify-content-between">
+                    <div class="pb-2  mx-4 d-flex justify-content-between">
                         <a href=" {{path('pin_like', {'id': pin.id})}} " class="btn btn-link js-like ">
                             {% if app.user and pin.isLikedByUser(app.user) %}
                                 <i class="fas fa-thumbs-up"></i>
@@ -44,32 +44,26 @@
                             <span class="js-label">J'aime</span>
                         </a>
                         <span  class="btn btn-link js-comment ">
-                            <i class="far fa-comment"><span class="pl-2">{{pin.commentaire | length > 0}} Commenter</span></i>
+                            <i class="far fa-comment"><span class="pl-2 js-comment">{{pin.commentaire | length }} Commenter</span></i>
                         </span>
                         
                     </div>
                     
                     <div class="mx-4 ">
+                        <div id="commentaires">
+                            {# Contenu via Ajax #}
+                                
+                        </div>
+
                         <form  method="POST" action="{{path('pin_comment', {'id': pin.id})}}" id="form-comment" >
                             <div id="commentaire">
-                                <div class="form-group"><label for="message" >Message</label><textarea id="message"
+                                <div class="form-group"><label for="message" >Message</label><textarea id="message" required
                                     name="message"  class="form-control"  ></textarea>
                                 </div>
                             </div>
-                            <button class="btn btn-primary mb-3" type="submit" class="js-comment">Commenter</button>
+                            <button class="btn btn-primary mb-3" type="submit" id="js-btn-comment">Commenter</button>
                         
                         </form>
-                            
-                        {% for commentaire in pin.commentaire %}
-                            
-                            <div class="alert alert-secondary mt-2" role="alert">
-                                <small class="font-weight-bold">{{commentaire.user.fullname}}</small><br> 
-                                <blockquote class="blockquote  text-small" style="font-size: 0.9em;">
-                                    {{commentaire.message}}
-                                </blockquote>
-                            </div>
-                        {% endfor %}
-
                     </div>
                 </div>
                 

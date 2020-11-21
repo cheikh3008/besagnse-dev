@@ -4,13 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Pin;
 use App\Entity\User;
+use App\Entity\Profil;
+use App\Form\ProfilType;
 use App\Form\EditProfileType;
 use App\Entity\PasswordUpdate;
 use App\Form\PasswordUpdateType;
-use App\Form\RegistrationFormType;
 use App\Repository\PinRepository;
+use App\Form\RegistrationFormType;
+use App\Repository\ProfilRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\FormError;
 use App\Security\FormLoginAuthenticator;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -111,13 +116,44 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/my-account", name="app_my_account")
+     * @Route("/my-account", name="app_my_account" )
      */
-    public function myAccount(PinRepository $pinRepository): Response
+    public function myAccount(PinRepository $pinRepository, Request $request, ProfilRepository $profilRepository): Response
     {
+        $user = $this->getUser();
+        $profil = new Profil();
+        $form = $this->createForm(ProfilType::class, $profil);
+        $form->handleRequest($request);
+        //$img = $profilRepository->find($profilRepository->findOneBy(['user' => $user])) ;
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            
+            $profil->setUser($user);
+            $entityManager->persist($profil);
+            $entityManager->flush();
+            
+            return $this->redirectToRoute('app_my_account');
+            
+        }
         return $this->render('registration/my-account.html.twig', [
             'user' =>  $user = $this->getUser(),
             'pins' => $pinRepository->findBy(array('user' => $user), array('updatedAt' => 'desc')),
+            'form' => $form->createView()
         ]); 
+    }
+
+
+    // /**
+    //  * @Route("profil/{id}", name="profil_delete", methods={"DELETE", "GET"})
+    //  */
+    public function delete( Profil $profil): Response
+    {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($profil);
+            $entityManager->flush();
+
+        return $this->redirectToRoute('app_my_account');
     }
 }

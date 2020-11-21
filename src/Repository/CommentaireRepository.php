@@ -18,7 +18,12 @@ class CommentaireRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Commentaire::class);
     }
-
+    public function findByUser($pin)
+    {  
+        return $this->getEntityManager()
+            ->createQuery('SELECT U.prenom, U.nom, C.message
+        FROM App\Entity\User U, App\Entity\Commentaire C, App\Entity\Pin P WHERE C.user = U.id AND C.pin = P.id AND P.id = '. $pin)->getArrayResult();
+    }
     // /**
     //  * @return Commentaire[] Returns an array of Commentaire objects
     //  */

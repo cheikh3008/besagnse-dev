@@ -7,6 +7,6 @@ vich_uploader:
             upload_destination: '%kernel.project_dir%/public/images/pins'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
         profil_image:
-            uri_prefix: /images/pins
-            upload_destination: '%kernel.project_dir%/public/images/pins'
+            uri_prefix: /images/profils
+            upload_destination: '%kernel.project_dir%/public/images/profils'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

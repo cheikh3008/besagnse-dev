@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Compte {{app.user.fullname}} {% endblock %}
+{% block title %}Compte |
+    {% if app.user %}
+        {{app.user.fullname}}
+    {% else %}
+        <p></p>
+    {% endif %}
+{% endblock %}
 
 {% block body %}
 {% for flashError in app.flashes('verify_email_error') %}
@@ -11,8 +17,26 @@
 </div>
 <div class="container">
     <div class="row align-items-center">
-        <div class="col-md-3 text-center ">
-            <img src=" {{ asset('/images/C360.jpg') }} " class="rounded-circle " alt="avatar" style="height: 200px; width:200px">
+        <div class="col-md-3 text-center mt-2 ">
+            {% if app.user.profil %}
+                <img src=" {{vich_uploader_asset(app.user.profil)}} " class="rounded-circle " alt="avatar"
+                    style="height: 200px; width:200px">
+            {% else %}
+                <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar" style="height: 200px; width:200px">
+            {% endif %}
+            <div>
+                {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
+                {{ form_row(form.imageFile) }}
+                {# <i class="fas fa-camera"></i> #}
+                <button class="btn btn-primary btn-block mb-3">Mettre à jour</button>
+                {{ form_end(form) }}
+                {# {% if app.user.profil %}
+                    <a href="{{ path('profil_delete', {'id': app.user.profil.id}) }}">Delete</a>
+                {% else %}
+                   <p></p>
+                {% endif %} #}
+            </div>
+            
         </div>
         <div class="col-md-9 mt-3">
             <h2 class="font-weight-bold display-4"> {{app.user.nomEntreprise }} </h2>
@@ -24,8 +48,6 @@
             <strong class="h5 font-weight-bold"> {{app.user.fullName}} </strong>
             <p>Entreprise de couture et formation de design haute couture mode international,
             kay sagnsei lu tokk nga nguénn feulalé todj fi radiax</p>
-
-            
         </div>
     </div>
 </div>

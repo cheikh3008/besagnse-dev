@@ -1,5 +1,5 @@
 
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-xl">
             <a class="navbar-brand text-uppercase" href="{{path('app_home')}}">Be Sagnsé</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07XL"
@@ -35,12 +35,17 @@
                     {% if app.user %}
                     <!-- <a href="{{ path('app_logout') }}" class="btn btn-primary my-2 my-sm-0 mr-2" type="submit">Deconnexion</a> -->
                     <div class="dropdown mt-1  ">
-                        <button class="float-right " style="border: none; background-color:none;" type="button"
+                        <button class="float-right " style="border: none; background-color:#343a40;" type="button"
                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src=" {{ asset('/images/C360.jpg') }} " class="rounded-circle" alt="avatar"
-                                style="height: 30px; width:30px">
-                            <span class=" font-weight-bold text-capitalize">{{app.user.fullname}}</span>
-                            <i class="fas fa-chevron-circle-down"></i>
+                            {% if app.user.profil %}
+                            <img src=" {{vich_uploader_asset(app.user.profil)}} " class="rounded-circle " alt="avatar"
+                                 style="height: 30px; width:30px">
+                            {% else %}
+                            <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
+                                 style="height: 30px; width:30px">
+                            {% endif %}
+                            <span class=" font-weight-bold text-capitalize" style="color: #ffffff;">{{app.user.fullname}}</span>
+                            <i class="fas fa-chevron-circle-down" style="color: #ffffff;"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
 
@@ -55,7 +60,7 @@
                         </div>
                     </div>
                     {% else %}
-                    <a href="{{ path('app_login') }}" class="btn btn-dark my-2 my-sm-0 mr-2"
+                    <a href="{{ path('app_login') }}" class="btn btn-primary my-2 my-sm-0 mr-2"
                         type="submit">S'identifier</a>
 
                     <a href="{{ path('app_register') }}" class="btn btn-success my-2 my-sm-0"
