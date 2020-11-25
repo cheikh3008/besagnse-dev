@@ -2,18 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\ProfilRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\Timestampable;
+use App\Repository\ProfilRepository;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass=ProfilRepository::class)
+ * @ORM\HasLifecycleCallbacks
  * @Vich\Uploadable
  */
 class Profil
 {
+    use Timestampable;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -22,21 +27,27 @@ class Profil
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $imageName;
-    /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
      * @Vich\UploadableField(mapping="profil_image", fileNameProperty="imageName")
-     * 
+     * @Assert\NotBlank(message="L'image est obligatoire .")
      * @var File|null
      */
     private $imageFile;
+
+    
+
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="profil")
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $imageName;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="profils")
      */
     private $user;
+
+
 
     public function getId(): ?int
     {
@@ -54,19 +65,6 @@ class Profil
 
         return $this;
     }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
@@ -83,7 +81,7 @@ class Profil
         if (null !== $imageFile) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->setUpdatedAt(new \DateTimeImmutable());
         }
     }
 
@@ -91,5 +89,16 @@ class Profil
     {
         return $this->imageFile;
     }
-    
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

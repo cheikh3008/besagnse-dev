@@ -37,12 +37,11 @@
                     <div class="dropdown mt-1  ">
                         <button class="float-right " style="border: none; background-color:#343a40;" type="button"
                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {% if app.user.profil %}
-                            <img src=" {{vich_uploader_asset(app.user.profil)}} " class="rounded-circle " alt="avatar"
-                                 style="height: 30px; width:30px">
+                            
+                            {% if app.user and profil  %}
+                            <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 30px; width:30px">
                             {% else %}
-                            <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
-                                 style="height: 30px; width:30px">
+                            <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"  style="height: 30px; width:30px">
                             {% endif %}
                             <span class=" font-weight-bold text-capitalize" style="color: #ffffff;">{{app.user.fullname}}</span>
                             <i class="fas fa-chevron-circle-down" style="color: #ffffff;"></i>
@@ -51,7 +50,7 @@
 
                             <a href="{{path('pin_new')}}" class="dropdown-item text-muted ">Poster un image</a>
                             <div class="dropdown-divider"></div>
-                            <a href=" {{path('app_my_account')}} " class="dropdown-item text-muted ">Compte</a>
+                            <a href=" {{path('app_compte_user')}} " class="dropdown-item text-muted ">Compte</a>
                             <a href="{{path('app_edit_profil')}}" class="dropdown-item text-muted ">Modifié mon
                                 profil</a>
                             <div class="dropdown-divider"></div>
@@ -60,10 +59,10 @@
                         </div>
                     </div>
                     {% else %}
-                    <a href="{{ path('app_login') }}" class="btn btn-primary my-2 my-sm-0 mr-2"
+                    <a href="{{ path('app_login') }}" class="btn btn-sm btn-outline-secondary my-2 my-sm-0 mr-2"
                         type="submit">S'identifier</a>
 
-                    <a href="{{ path('app_register') }}" class="btn btn-success my-2 my-sm-0"
+                    <a href="{{ path('app_register') }}" class="btn btn-sm btn-outline-secondary my-2 my-sm-0"
                         type="submit">S'inscrire</a>
                     {% endif %}
                 </div>

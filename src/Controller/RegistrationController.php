@@ -76,14 +76,14 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_compte_user');
         }
         return $this->render('registration/edit-profil.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
     /**
-     * @Route("/password-update", name="app_password-update")
+     * @Route("/password-update", name="app_password_update")
      */
     public function password_upadte(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -106,7 +106,7 @@ class RegistrationController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
-                return $this->redirectToRoute('app_home');
+                return $this->redirectToRoute('app_compte_user');
             }
         }
 
@@ -116,44 +116,63 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/my-account", name="app_my_account" )
+     * @Route("/profil-user/{id}", name="app_profil_user" )
      */
-    public function myAccount(PinRepository $pinRepository, Request $request, ProfilRepository $profilRepository): Response
+    public function userProfil(PinRepository $pinRepository, ProfilRepository $profilRepository , $id, UserRepository $userRepository): Response
     {
-        $user = $this->getUser();
-        $profil = new Profil();
-        $form = $this->createForm(ProfilType::class, $profil);
-        $form->handleRequest($request);
-        //$img = $profilRepository->find($profilRepository->findOneBy(['user' => $user])) ;
         
-        if ($form->isSubmitted() && $form->isValid()) {
-            
-            $entityManager = $this->getDoctrine()->getManager();
-            
-            $profil->setUser($user);
-            $entityManager->persist($profil);
-            $entityManager->flush();
-            
-            return $this->redirectToRoute('app_my_account');
-            
-        }
-        return $this->render('registration/my-account.html.twig', [
-            'user' =>  $user = $this->getUser(),
+        return $this->render('registration/profil-user.html.twig', [
+            'user' =>  $user = $userRepository->findOneById($id),
             'pins' => $pinRepository->findBy(array('user' => $user), array('updatedAt' => 'desc')),
-            'form' => $form->createView()
+            'form' => '',
+            'profil' => $profilRepository->findOneBy(['user' => $this->getUser()], ['updatedAt' => 'desc'])
+
         ]); 
     }
 
-
-    // /**
-    //  * @Route("profil/{id}", name="profil_delete", methods={"DELETE", "GET"})
-    //  */
-    public function delete( Profil $profil): Response
+    /**
+     * @Route("compte-user", name="app_compte_user")
+     * 
+     */
+    public function userCompte(PinRepository $pinRepository, Request $request, ProfilRepository $profilRepository)
     {
+        $profil = new profil();
+        $user = $this->getUser();
+        $form = $this->createForm(ProfilType::class, $profil);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($profil);
+            /**
+             * elle permet de supprimer un profil d'utilisateur s'il en existe dans la base de donnéés
+             */
+            if ($user->isUserProfil($user) === true) {
+                $pp = $profilRepository->findBy(['user' => $user ]);
+                foreach ($pp as $value) {
+                    $entityManager->remove($value);
+                }
+            }
+            $profil->setUser($user);
+            $entityManager->persist($profil);
             $entityManager->flush();
+           
+            return $this->redirectToRoute('app_compte_user');
+        }
 
-        return $this->redirectToRoute('app_my_account');
+        return $this->render('registration/profil-user.html.twig', [
+            'user' =>  $user = $this->getUser(),
+            'pins' => $pinRepository->findBy(array('user' => $user), array('updatedAt' => 'desc')),
+            'form' => $form->createView(),
+            'profil'=> $profilRepository->findOneBy(['user' => $user], ['updatedAt' => 'desc'])
+        ]); 
+
     }
+
+    public function avatarNav(ProfilRepository $profilRepository)
+    {
+        return $this->render('partials/nav/nav.html.twig', [
+            'user' =>  $user = $this->getUser(),
+            'profil' => $profilRepository->findOneBy(['user' => $user], ['updatedAt' => 'desc'])
+        ]); 
+    }
+
 }

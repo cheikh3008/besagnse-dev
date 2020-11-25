@@ -102,13 +102,16 @@ class User implements UserInterface
     private $jaimes;
 
     /**
-     * @ORM\OneToOne(targetEntity=Profil::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Profil::class, mappedBy="user")
      */
-    private $profil;
+    private $profils;
+
+
 
     public function __construct()
     {
         $this->jaimes = new ArrayCollection();
+        $this->profils = new ArrayCollection();
     }
     
     
@@ -364,24 +367,54 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getProfil(): ?Profil
+    /**
+     * @return Collection|Profil[]
+     */
+    public function getProfils(): Collection
     {
-        return $this->profil;
+        return $this->profils;
     }
 
-    public function setProfil(?Profil $profil): self
+    public function addProfil(Profil $profil): self
     {
-        $this->profil = $profil;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newUser = null === $profil ? null : $this;
-        if ($profil->getUser() !== $newUser) {
-            $profil->setUser($newUser);
+        if (!$this->profils->contains($profil)) {
+            $this->profils[] = $profil;
+            $profil->setUser($this);
         }
 
         return $this;
     }
 
+    public function removeProfil(Profil $profil): self
+    {
+        if ($this->profils->contains($profil)) {
+            $this->profils->removeElement($profil);
+            // set the owning side to null (unless already changed)
+            if ($profil->getUser() === $this) {
+                $profil->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * elle permet de savoir si l'utilisateur qu'on lui passe en parametre a déja des photo de 
+     * profils ou pas ? cette function retourne un boolean : vrai ou frai
+     *
+     * @param UserInterface $user
+     * @return boolean
+     */
+    public function isUserProfil(UserInterface $user): bool
+    {
+        foreach ($this->profils as $profil) {
+            if ($profil->getUser() == $user) {
+                return true;
+            }
+        }
+        return false;
+    }
     
+
     
 }

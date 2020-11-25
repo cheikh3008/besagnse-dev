@@ -10,6 +10,7 @@ use App\Form\CommentaireType;
 use App\Repository\PinRepository;
 use App\Repository\JaimeRepository;
 use App\Repository\CommentaireRepository;
+use App\Repository\ProfilRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,27 +33,27 @@ class PinController extends AbstractController
     /**
      * @Route("/", name="app_home", methods={"GET" , "POST"})
      */
-    public function index( PinRepository $pinRepository, Request $request, CommentaireRepository $commentaireRepository): Response
+    public function index( PinRepository $pinRepository, Request $request, ProfilRepository $profilRepository): Response
     {
-        $pin = $pinRepository->findBy(array(), array('updatedAt' => 'DESC'));
-        $data =  $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'));
-        if ($request->isXmlHttpRequest()) {
-            $jsonData = array();
-            $idx = 0;
-            foreach ($data as $values) {
-                $temp = array(
-                    'fullname' => $values->getUser()->getPrenom().' '. $values->getUser()->getNom(),
-                    'message' => $values->getMessage(),
-                    'pin' => $values->getPin()->getId()
-                );
-                $jsonData[$idx++] = $temp;
-            }
-            return new JsonResponse($jsonData);
-        } 
+        
+        // $data =  $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'));
+        // if ($request->isXmlHttpRequest()) {
+        //     $jsonData = array();
+        //     $idx = 0;
+        //     foreach ($data as $values) {
+        //         $temp = array(
+        //             'fullname' => $values->getUser()->getPrenom().' '. $values->getUser()->getNom(),
+        //             'message' => $values->getMessage(),
+        //             'pin' => $values->getPin()->getId()
+        //         );
+        //         $jsonData[$idx++] = $temp;
+        //     }
+        //     return new JsonResponse($jsonData);
+        // } 
 
         return $this->render('pin/index.html.twig', [
-            'pins' => $pin,
-            'commentaire' => $data
+            'pins' => $pinRepository->findBy(array(), array('updatedAt' => 'DESC')),
+            'profil' => $profilRepository->findOneBy(['user' => $this->getUser()], ['updatedAt' => 'desc'])
         ]);
     }
     
@@ -84,12 +85,13 @@ class PinController extends AbstractController
     /**
      * @Route("pin/{id}", name="pin_show", methods={"GET","POST"})
      */
-    public function show(Pin $pin, Request $request, CommentaireRepository $commentaireRepository): Response
+    public function show(Pin $pin, Request $request, CommentaireRepository $commentaireRepository, ProfilRepository $profilRepository): Response
     {
         
         return $this->render('pin/show.html.twig', [
             'pin'  => $pin,
             'commentaire' => $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'), 3),
+            'profil' => $profilRepository->findOneBy(['user' => $this->getUser()], ['updatedAt' => 'desc'])
         ]);
     }
 
