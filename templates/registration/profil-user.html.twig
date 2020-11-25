@@ -4,27 +4,38 @@
 
 {% block body %}
     
-    <div class="album py-5 bg-light">
+    <div class="album py-3 bg-light">
         <div class="container">
             <div class="row " >
                 <div class="col-md-4 text-center" >
-                     {% if user and profil %}
-                        <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar"
-                            style="height: 200px; width:200px">
-                        {% else %}
-                        <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
-                            style="height: 200px; width:200px">
-                        {% endif %}
-                        <p class="mt-2 "> {{ user.fullname }} </p>
+                    {% if user and profil %}
+                    <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar"
+                        style="height: 200px; width:200px">
+                    {% else %}
+                    <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
+                        style="height: 200px; width:200px">
+                    {% endif %}
+                    <p class="mt-2 font-weight-bold"> {{ user.fullname }} </p>
+                    {{ form_start(form) }}
+                        {# <div class="row"> 
+                            <div class="col-sm-1 col-md-6"> #}
+                                {{ form_widget(form) }}
+                            {# </div>
+                            <div class="col-sm-1 col-md-6"> #}
+                                <button class="btn btn-sm btn-outline-secondary btn-small mt-1">Mettre à jour</button>
+                            {# </div>
+                        </div> #}
+                    {{form_end(form)}}
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8 ">
                     <h2 class="display-4"> {{ user.nomEntreprise }} </h2>
-                    <p> {{user.adresse}} </p>
-                    <p> {{user.telephone}} </p>
-                    <p> {{user.pin | length}} publications </p>
-                    <p>  </p>
-                    <a href=" {{path('app_edit_profil')}} " class="btn btn-sm btn-outline-secondary btn-small">Modidier mes information</a>
-                    <a href=" {{path('app_password_update')}} " class="btn btn-sm btn-outline-secondary btn-small">Modidier mon mot passe</a>
+                    <p> <i class="fas fa-map-marker-alt"></i> {{user.adresse}} </p>
+                    <p><i class="fas fa-phone-alt"></i> {{user.telephone}} </p>
+                    <p><i class="fas fa-file-image"></i> {{user.pin | length}} publications </p>
+                    {% if user is same as(app.user) %}
+                        <a href=" {{path('app_edit_profil')}} " class="btn btn-sm btn-outline-secondary btn-small">Modidier mes information</a>
+                        <a href=" {{path('app_password_update')}} " class="btn btn-sm btn-outline-secondary btn-small">Modidier mon mot passe</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -32,20 +43,34 @@
     <div class="mt-3">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                        <div class="card-body">
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">afficher</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Modidier</button>
+                {% for pins in pin %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <a href="{{ path('pin_show', {'id': pins.id}) }}">
+                                <img src=" {{vich_uploader_asset(pins)}} " class="bd-placeholder-img card-img-top" alt=" {{pins.titre}} " width="100%" height="400" role="img">
+                            </a>
+                            <div class="card-body">
+                            <p class="card-text">
+                                {{ pins.titre }}
+                            </p>
+                            <p class="card-text">
+                                {{ pins.description }}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                <a href=" {{ path('pin_show', { id: pins.id } ) }} " class="btn btn-sm btn-outline-secondary">Afficher</a>
+                                <a href=" {{ path('pin_edit', { id: pins.id }) }} " class="btn btn-sm btn-outline-secondary">Modifier</a>
+                                </div>
+                                <span class="card-text pl-2">
+                                    <small class="text-muted">
+                                        Publié le {{pins.updatedAt| date('d/m/Y')}} à {{pins.updatedAt| date('H:i')}}
+                                    </small>
+                                </span>
                             </div>
-                            <small class="text-muted">9 mins</small>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

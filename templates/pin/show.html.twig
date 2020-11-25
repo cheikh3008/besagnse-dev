@@ -13,18 +13,21 @@
             </div>
                 <div class="bloc_card  col-md-6 d-flex justify-content-around  ">
                     <div class="card-body" width="100%">
-                         {% if app.user and profil %}
-                                <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar"
-                                    style="height: 30px; width:30px">
+                        {% for profil in pin.user.profils %}
+                            
+                                {% if pin.user.profils %}
+                                <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 30px; width:30px">
                                 {% else %}
+
                                 <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
                                     style="height: 30px; width:30px">
                                 {% endif %}
-                                <span class="card-text pl-2">
-                                    <small class="text-muted">
-                                        Publié le {{pin.updatedAt| date('d/m/Y')}} à {{pin.updatedAt| date('H:i')}}
-                                    </small>
-                                </span>
+                        {% endfor %}
+                        <span class="card-text pl-2">
+                            <small class="text-muted">
+                                Publié le {{pin.updatedAt| date('d/m/Y')}} à {{pin.updatedAt| date('H:i')}}
+                            </small>
+                        </span>
                         <h5 class="card-title">{{ pin.titre }}</h5>
                         <p class="card-text">{{ pin.description }}</p>
                         <hr>

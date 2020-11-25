@@ -20,18 +20,22 @@
                                     <div class="ml-2">{{ include('pin/_delete_form.html.twig') }}</div>
                                 </div>
                             </div>
-                                {% if app.user and profil %}
-                                <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar"
-                                    style="height: 30px; width:30px">
+                            {% for profil in pin.user.profils %}
+                            
+                                {% if pin.user.profils %}
+                                <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 30px; width:30px">
                                 {% else %}
+
                                 <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
                                     style="height: 30px; width:30px">
                                 {% endif %}
+                            {% endfor %}
                                 <span class="card-text pl-2">
                                     <small class="text-muted">
                                         Publié le {{pin.updatedAt| date('d/m/Y')}} à {{pin.updatedAt| date('H:i')}}
                                     </small>
                                 </span>
+                            
                             <h4 class="card-title ">{{pin.titre}}</h4>
                             <p class="card-text">{{pin.description}}</p>
                             

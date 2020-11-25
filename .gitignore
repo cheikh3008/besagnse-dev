@@ -18,3 +18,7 @@
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
+
+###> image de profil - pin ###
+/public/image/
+###< image de profil - pin ###

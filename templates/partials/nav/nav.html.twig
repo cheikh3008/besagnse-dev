@@ -38,11 +38,13 @@
                         <button class="float-right " style="border: none; background-color:#343a40;" type="button"
                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             
-                            {% if app.user and profil  %}
-                            <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 30px; width:30px">
-                            {% else %}
-                            <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"  style="height: 30px; width:30px">
-                            {% endif %}
+                            {% for profil in app.user.profils %}
+                                {% if app.user.profils   %}
+                                <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 30px; width:30px">
+                                {% else %}
+                                <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"  style="height: 30px; width:30px">
+                                {% endif %}
+                            {% endfor %}
                             <span class=" font-weight-bold text-capitalize" style="color: #ffffff;">{{app.user.fullname}}</span>
                             <i class="fas fa-chevron-circle-down" style="color: #ffffff;"></i>
                         </button>
