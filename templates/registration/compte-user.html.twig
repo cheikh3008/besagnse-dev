@@ -8,21 +8,28 @@
         <div class="container">
             <div class="row " >
                 <div class="col-md-4 text-center" >
-                    {% for profil in user.profils %}
-                        {% if user  %}
-                        <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar"
-                            style="height: 200px; width:200px">
-                        {% else %}
-                        <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
-                            style="height: 200px; width:200px">
-                        {% endif %}
-                    {% endfor %}
+                    {% if user and profil %}
+                    <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar"
+                        style="height: 200px; width:200px">
+                    {% else %}
+                    <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
+                        style="height: 200px; width:200px">
+                    {% endif %}
                     <p class="mt-2 font-weight-bold"> {{ user.fullname }} </p>
-                    
+                    {{ form_start(form) }}
+                        {# <div class="row"> 
+                            <div class="col-sm-1 col-md-6"> #}
+                                {{ form_widget(form) }}
+                            {# </div>
+                            <div class="col-sm-1 col-md-6"> #}
+                                <button class="btn btn-sm btn-outline-secondary btn-small mt-1">Mettre à jour</button>
+                            {# </div>
+                        </div> #}
+                    {{form_end(form)}}
                 </div>
                 <div class="col-md-8 ">
                     <h2 class="display-4"> {{ user.nomEntreprise }} </h2>
-                    <p class="text-capitalize"> <i class="fas fa-map-marker-alt"></i> {{user.adresse}} </p>
+                    <p> <i class="fas fa-map-marker-alt"></i> {{user.adresse}} </p>
                     <p><i class="fas fa-phone-alt"></i> {{user.telephone}} </p>
                     <p><i class="fas fa-file-image"></i> {{user.pin | length}} publications </p>
                     {% if user is same as(app.user) %}

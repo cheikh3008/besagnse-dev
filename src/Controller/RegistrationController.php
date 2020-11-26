@@ -123,10 +123,8 @@ class RegistrationController extends AbstractController
         
         return $this->render('registration/profil-user.html.twig', [
             'user' =>  $user = $userRepository->findOneById($id),
-            'pins' => $pinRepository->findBy(array('user' => $user), array('updatedAt' => 'desc')),
-            'form' => '',
-            'profil' => $profilRepository->findOneBy(['user' => $this->getUser()], ['updatedAt' => 'desc'])
-
+            'pin' => $pinRepository->findBy(array('user' => $user), array('updatedAt' => 'desc')),
+            
         ]); 
     }
 
@@ -158,7 +156,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_compte_user');
         }
 
-        return $this->render('registration/profil-user.html.twig', [
+        return $this->render('registration/compte-user.html.twig', [
             'user' =>  $user = $this->getUser(),
             'pin' => $pinRepository->findBy(array('user' => $user), array('updatedAt' => 'desc')),
             'form' => $form->createView(),
@@ -167,12 +165,5 @@ class RegistrationController extends AbstractController
 
     }
 
-    public function avatarNav(ProfilRepository $profilRepository)
-    {
-        return $this->render('partials/nav/nav.html.twig', [
-            'user' =>  $user = $this->getUser(),
-            'profil' => $profilRepository->findOneBy(['user' => $user], ['updatedAt' => 'desc'])
-        ]); 
-    }
 
 }

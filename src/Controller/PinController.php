@@ -33,7 +33,7 @@ class PinController extends AbstractController
     /**
      * @Route("/", name="app_home", methods={"GET" , "POST"})
      */
-    public function index( PinRepository $pinRepository, Request $request, ProfilRepository $profilRepository): Response
+    public function index( PinRepository $pinRepository, Request $request): Response
     {
         
         // $data =  $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'));
@@ -53,7 +53,6 @@ class PinController extends AbstractController
 
         return $this->render('pin/index.html.twig', [
             'pins' => $pinRepository->findBy(array(), array('updatedAt' => 'DESC')),
-            'profil' => $profilRepository->findOneBy(['user' => $this->getUser()], ['updatedAt' => 'desc'])
         ]);
     }
     
@@ -85,13 +84,12 @@ class PinController extends AbstractController
     /**
      * @Route("pin/{id}", name="pin_show", methods={"GET","POST"})
      */
-    public function show(Pin $pin, Request $request, CommentaireRepository $commentaireRepository, ProfilRepository $profilRepository): Response
+    public function show(Pin $pin, Request $request, CommentaireRepository $commentaireRepository): Response
     {
         
         return $this->render('pin/show.html.twig', [
             'pin'  => $pin,
             'commentaire' => $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'), 3),
-            'profil' => $profilRepository->findOneBy(['user' => $this->getUser()], ['updatedAt' => 'desc'])
         ]);
     }
 

@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block title %}non accordée {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="jumbotron mx-5">
+            <h1 class="display-3">Erreur 403</h1>
+            <p class="lead">Oups! Vous n'êtes pas autorisés à acceder sur cette page tant que vous n'êtes pas connectés ou bien avoir les droits necessaire .</p>
+            <hr class="my-2">
+            <p>Vous pouvez retournez à l'acceuil pour voir les dernières publications ou se connectez si vous disposez d'un compte . </p>
+            <p class="lead">
+                <a class="btn  btn-outline-secondary btn-lg" href=" {{ path('app_home') }} " role="button">Retour à l'accueil</a>
+                {% if app.user %}
+
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-lg btn-outline-secondary "
+                        type="submit">S'identifier</a>
+
+                    <a href="{{ path('app_register') }}" class="btn btn-lg btn-outline-secondary"
+                        type="submit">S'inscrire</a>
+                    {% endif %}
+            </p>
+        </div>
+    </div>
+{% endblock %}
