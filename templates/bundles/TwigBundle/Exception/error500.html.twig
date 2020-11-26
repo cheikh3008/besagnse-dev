@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Page non trouvée{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-3">Erreur 500</h1>
+            <p class="lead">Oups! Une erreur est survenue lors du chargement de la page, veuillez réessayez plus tard.</p>
+            <hr class="my-2">
+            <p>Vous pouvez retournez à l'acceuil pour voir les dernières publications. </p>
+            <p class="lead mt-3 ">
+                <a class="btn  btn-outline-secondary btn-lg" href=" {{ path('app_home') }} " role="button">Retour à l'accueil
+
+                </a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

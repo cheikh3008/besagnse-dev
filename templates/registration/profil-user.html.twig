@@ -8,15 +8,15 @@
         <div class="container">
             <div class="row " >
                 <div class="col-md-4 text-center" >
-                    {% for profil in user.profils %}
-                        {% if user  %}
-                        <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar"
-                            style="height: 200px; width:200px">
+                    
+                        {% if user.profils | length > 0  %}
+                            {% for profil in user.profils %}
+                                <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 200px; width:200px">
+                             {% endfor %}
                         {% else %}
-                        <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
-                            style="height: 200px; width:200px">
+                            <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"  style="height: 200px; width:200px">
                         {% endif %}
-                    {% endfor %}
+                   
                     <p class="mt-2 font-weight-bold"> {{ user.fullname }} </p>
                     
                 </div>
