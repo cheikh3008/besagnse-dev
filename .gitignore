@@ -20,5 +20,6 @@
 ###< liip/imagine-bundle ###
 
 ###> image de profil - pin ###
-/public/image/
+/public/images/pins
+/public/images/profils
 ###< image de profil - pin ###
