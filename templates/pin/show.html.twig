@@ -49,7 +49,7 @@
                                 </a>
                             </div>
                             <div class="mt-2" >
-                                <span class="js-comment" >{{commentaire | length }}</span>
+                                <span class="js-comment" >{{pin.commentaire | length }}</span>
                                 <i class="far fa-comment"><span class="pl-1 js-label-comment">Commenter</span></i>
                                 
 
@@ -57,21 +57,17 @@
                         
                         </div>
                             <div >
-                                
-                            </div>
-                            <div >
                                 {# {{ form_start(form , {attr: {'novalidate': 'novalidate'}} ) }}
                                 {{ form_widget(form) }}
                                     <button class="btn btn-primary">Commenter</button>
                                 {{ form_end(form) }} #}
-                                <form method="POST" action="{{path('pin_comment', {'id': pin.id})}}" id="form-comment">
-                                    <div id="commentaire">
-                                        <div class="form-group"><label for="message">Message</label><textarea id="message" name="message"
-                                            required    class="form-control" ></textarea>
-                                        </div>
+                                <form method="POST" action="{{path('pin_comment', {'id': pin.id})}}" class="form-comment ">
+                                <div id="commentaire">
+                                    <div class="form-group"><label for="message">Message</label><textarea id="message" name="message" required   class="form-control" ></textarea>
                                     </div>
-                                    <button class="btn btn-primary mb-3" type="submit" class="js-comment">Commenter</button>
-                                
+                                </div>
+                                <button class="btn btn-primary mb-3" type="submit" class="js-comment">Commenter</button>
+                                    
                                 </form>
                             </div>
                         {% for commentaire in commentaire %}

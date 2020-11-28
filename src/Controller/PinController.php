@@ -84,7 +84,7 @@ class PinController extends AbstractController
     /**
      * @Route("pin/{id}", name="pin_show", methods={"GET","POST"})
      */
-    public function show(Pin $pin, Request $request, CommentaireRepository $commentaireRepository): Response
+    public function show(Pin $pin, CommentaireRepository $commentaireRepository): Response
     {
         
         return $this->render('pin/show.html.twig', [
@@ -207,18 +207,21 @@ class PinController extends AbstractController
         $commentaire->setMessage($request->request->get('message'));
         $entityManager->persist($commentaire);
         $entityManager->flush();
-        $commentaires = $commentaireRepository->findByUser($pin->getId());
-        
-        // if ($request->isXmlHttpRequest()) {
-        //     return new JsonResponse([
-        //         $this->renderView('pin/_commentaire.html.twig', [
-        //             'commentaires' => $commentaires
-        //         ])
-        //     ]);
-        // }
+        $commentaires = $commentaireRepository->findBy(['pin' => $pin ,'user' => $user], ['updatedAt' => 'asc']);
+        $jsonData =[];
+        foreach ($commentaires as $values) {
+            $temp = array(
+                'fullname' => $values->getUser()->getPrenom().' '. $values->getUser()->getNom(),
+                'message' => $values->getMessage()
+            );
+            $jsonData  = $temp;
+        }
         return $this->json([
             'code' => 200,
-            'message' => 'like bien ajouté'
+            'form' => $form->createView(),
+            'message' => 'like bien ajouté',
+            'commentaire' => $jsonData,
+            'nbCommentaire' => $commentaireRepository->count(['pin' => $pin, 'user' => $user])
         ]);
 
     }

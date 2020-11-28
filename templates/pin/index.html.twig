@@ -3,7 +3,7 @@
         {% include "partials/banniere/banniere.html.twig" %}
     {% endblock header %}
     {% block body %}
-    <div style="background-color: #f0f2f5;">
+    <div >
         
         <div class="container pt-4">
         {% for pin in pins %}
@@ -20,8 +20,6 @@
                                     <div class="ml-2">{{ include('pin/_delete_form.html.twig') }}</div>
                                 </div>
                             </div>
-                            
-                            
                             {% if pin.user.profils | length > 0%}
                                 {% for profil in pin.user.profils %}
                                     <a href=" {{ path('app_profil_user', { id: pin.user.id }) }} ">
@@ -67,19 +65,24 @@
                     </div>
                     
                     <div class="mx-4 ">
-                        <div class="commentaires">
-                            {# Contenu via Ajax #}
+                        {% for commentaire in pin.commentaire %}
+                            <div class="commentaires">
+                                    
+                                <div class=" badge badge-light text-left my-1" >
+                                   <small class="fullname-js"> {{ commentaire.user.fullname }} </small>  <br>
+                                    <small class="message-js" > {{ commentaire.message }} </small> 
+                                </div>
                                 
-                        </div>
+                            </div>  
+                        {% endfor %}
 
-                        <form  method="POST" action="{{path('pin_comment', {'id': pin.id})}}" id="form-comment" >
+                        <form method="POST" action="{{path('pin_comment', {'id': pin.id})}}" class="form-comment ">
                             <div id="commentaire">
-                                <div class="form-group"><label for="message" >Message</label><textarea id="message" required
-                                    name="message"  class="form-control"  ></textarea>
+                                <div class="form-group"><label for="message">Message</label><textarea id="message" name="message" required   class="form-control" ></textarea>
                                 </div>
                             </div>
-                            <button class="btn btn-primary mb-3" type="submit" id="js-btn-comment">Commenter</button>
-                        
+                            <button class="btn btn-primary mb-3" type="submit" class="js-comment">Commenter</button>
+                                
                         </form>
                     </div>
                 </div>

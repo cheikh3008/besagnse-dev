@@ -12,7 +12,7 @@
                         {% if user.profils | length > 0  %}
                             {% for profil in user.profils %}
                                 <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 200px; width:200px">
-                             {% endfor %}
+                            {% endfor %}
                         {% else %}
                             <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"  style="height: 200px; width:200px">
                         {% endif %}
@@ -25,6 +25,7 @@
                     <p class="text-capitalize"> <i class="fas fa-map-marker-alt"></i> {{user.adresse}} </p>
                     <p><i class="fas fa-phone-alt"></i> {{user.telephone}} </p>
                     <p><i class="fas fa-file-image"></i> {{user.pin | length}} publications </p>
+                    <!-- si le profil user est le même que le user qui est connecté -->
                     {% if user is same as(app.user) %}
                         <a href=" {{path('app_edit_profil')}} " class="btn btn-sm btn-outline-secondary btn-small">Modidier mes information</a>
                         <a href=" {{path('app_password_update')}} " class="btn btn-sm btn-outline-secondary btn-small">Modidier mon mot passe</a>

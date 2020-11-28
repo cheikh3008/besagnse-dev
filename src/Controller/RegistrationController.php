@@ -158,8 +158,10 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/compte-user.html.twig', [
             'user' =>  $user = $this->getUser(),
+            //retourne l'ensemble des pins d'un user
             'pin' => $pinRepository->findBy(array('user' => $user), array('updatedAt' => 'desc')),
             'form' => $form->createView(),
+            //retourne le profil d'un user
             'profil'=> $profilRepository->findOneBy(['user' => $user], ['updatedAt' => 'desc'])
         ]); 
 
