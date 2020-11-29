@@ -9,15 +9,16 @@ use App\Entity\Commentaire;
 use App\Form\CommentaireType;
 use App\Repository\PinRepository;
 use App\Repository\JaimeRepository;
-use App\Repository\CommentaireRepository;
 use App\Repository\ProfilRepository;
+use App\Repository\CommentaireRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PinController extends AbstractController
@@ -55,9 +56,12 @@ class PinController extends AbstractController
             'pins' => $pinRepository->findBy(array(), array('updatedAt' => 'DESC')),
         ]);
     }
+
     
+     
     /**
      * @Route("pin/new", name="pin_new", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_TAILLEUR')")
      */
     public function new(Request $request): Response
     {
@@ -95,7 +99,7 @@ class PinController extends AbstractController
 
     /**
      * @Route("pin/{id}/edit", name="pin_edit", methods={"GET","POST"})
-     * 
+     * @Security("is_granted('ROLE_TAILLEUR' and user === pin.getUser())")
      */
     public function edit(Request $request, Pin $pin): Response
     {
@@ -117,7 +121,7 @@ class PinController extends AbstractController
 
     /**
      * @Route("/{id}", name="pin_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_TAILLEUR")
+     * @Security("is_granted('ROLE_TAILLEUR' and user === pin.getUser())")
      */
     public function delete(Request $request, Pin $pin): Response
     {
@@ -130,101 +134,7 @@ class PinController extends AbstractController
         return $this->redirectToRoute('app_home');
     }
 
-    /**
-     * @Route("pin/{id}/like", name="pin_like")
-     * cette fonction permet de liker un pin
-     * @param Pin $pin
-     * @param JaimeRepository $jaimeRepository
-     * @return Response
-     */
-    public function like(Pin $pin, JaimeRepository $jaimeRepository): Response
-    {
-        
-        $user = $this->getUser();
-        if(!$user){
-            return $this->json([
-                'code' => 403,
-                'message' => 'Permission non accordéé',
-            ], 403);
-        }
-        if($pin->isLikedByUser($user) ){
-            $like = $jaimeRepository->findOneBy([
-                'pin' => $pin,
-                'user' => $user
-            ]);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($like);
-            $entityManager->flush();
-
-            return $this->json([
-                'code' => 200,
-                'message' => 'like bien supprimé',
-                'likes' => $jaimeRepository->count([
-                    'pin' => $pin 
-                ])
-            ], 200);
-        }
-        $like  = new Jaime();
-        $entityManager = $this->getDoctrine()->getManager();
-        $like->setUser($user); 
-        $like->setPin($pin);
-        $entityManager->persist($like);
-
-        $entityManager->flush();
-        return $this->json([
-            'code' => 200,
-            'message' => 'like bien ajouté',
-            'likes' => $jaimeRepository->count([
-                'pin' => $pin
-            ])
-        ], 200);
-    }
-
-    /**
-     * @Route("pin/{id}/comment", name="pin_comment" )
-     * cette fonction permet de commenter un pin
-     * @param Pin $pin
-     * @param CommentaireRepository $commentaireRepository
-     * @return Response
-     */
-    public function comment(Pin $pin , Request $request , CommentaireRepository $commentaireRepository, SerializerInterface $serializer): Response
-    {
-        $user = $this->getUser();
-        if (!$user) {
-            return $this->json([
-                'code' => 403,
-                'message' => 'Permission non accordéé',
-            ], 403);
-        }
-        
-        $commentaire = new Commentaire();
-        $form = $this->createForm(CommentaireType::class, $commentaire);
-        $form->handleRequest($request);
     
-        $entityManager = $this->getDoctrine()->getManager();
-        $commentaire->setUser($user);
-        $commentaire->setPin($pin);
-        $commentaire->setMessage($request->request->get('message'));
-        $entityManager->persist($commentaire);
-        $entityManager->flush();
-        $commentaires = $commentaireRepository->findBy(['pin' => $pin ,'user' => $user], ['updatedAt' => 'asc']);
-        $jsonData =[];
-        foreach ($commentaires as $values) {
-            $temp = array(
-                'fullname' => $values->getUser()->getPrenom().' '. $values->getUser()->getNom(),
-                'message' => $values->getMessage()
-            );
-            $jsonData  = $temp;
-        }
-        return $this->json([
-            'code' => 200,
-            'form' => $form->createView(),
-            'message' => 'like bien ajouté',
-            'commentaire' => $jsonData,
-            'nbCommentaire' => $commentaireRepository->count(['pin' => $pin, 'user' => $user])
-        ]);
-
-    }
 
   
 }

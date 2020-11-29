@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Profil | {{user }} {% endblock %}
+{% block title %}Profil | {{user.fullname }} {% endblock %}
 
 {% block body %}
     
@@ -16,16 +16,12 @@
                         style="height: 200px; width:200px">
                     {% endif %}
                     <p class="mt-2 font-weight-bold"> {{ user.fullname }} </p>
-                    {{ form_start(form) }}
-                        {# <div class="row"> 
-                            <div class="col-sm-1 col-md-6"> #}
-                                {{ form_widget(form) }}
-                            {# </div>
-                            <div class="col-sm-1 col-md-6"> #}
-                                <button class="btn btn-sm btn-outline-secondary btn-small mt-1">Mettre à jour</button>
-                            {# </div>
-                        </div> #}
-                    {{form_end(form)}}
+                    {% if user is same as(app.user) %}
+                        {{ form_start(form) }}
+                            {{ form_widget(form) }}
+                            <button class="btn btn-sm btn-outline-secondary btn-small mt-1">Mettre à jour</button>
+                        {{form_end(form)}}
+                    {% endif %}
                 </div>
                 <div class="col-md-8 ">
                     <h2 class="display-4"> {{ user.nomEntreprise }} </h2>

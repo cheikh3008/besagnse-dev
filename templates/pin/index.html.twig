@@ -22,12 +22,12 @@
                             </div>
                             {% if pin.user.profils | length > 0%}
                                 {% for profil in pin.user.profils %}
-                                    <a href=" {{ path('app_profil_user', { id: pin.user.id }) }} ">
+                                    <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
                                         <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 30px; width:30px">
                                     </a>
                                 {% endfor %}
                             {% else %}
-                            <a href=" {{ path('app_profil_user', { id: pin.user.id }) }} ">
+                            <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
                                 <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
                                 style="height: 30px; width:30px">
                             </a>
@@ -43,7 +43,7 @@
                             <p class="card-text">{{pin.description}}</p>
                             
                             <a href="{{ path('pin_show', {'id': pin.id}) }}">
-                                <img src="{{vich_uploader_asset(pin) | imagine_filter('squared_thumbnail_medium')}}" class="card-img img-fluid rounded"  alt="{{pin.titre}}">
+                               <img src=" {{vich_uploader_asset(pin)}} " class="bd-placeholder-img card-img-top shadow img-fluid" alt=" {{pin.titre}} " width="100%" height="400" role="img">
                             </a>
                         </div>
                         <hr>
@@ -66,24 +66,28 @@
                     
                     <div class="mx-4 ">
                         {% for commentaire in pin.commentaire %}
-                            <div class="commentaires">
-                                    
-                                <div class=" badge badge-light text-left my-1" >
-                                   <small class="fullname-js"> {{ commentaire.user.fullname }} </small>  <br>
+                            <div class="commentaires align-items-center ">
+                                {% if pin.user.profils | length > 0%}
+                                    {% for profil in pin.user.profils %}
+                                            <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
+                                                <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 25px; width:25px; margin-bottom:10px; margin-right:10px">
+                                            </a>
+                                        {% endfor %}
+                                    {% else %}
+                                    <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
+                                        <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
+                                        style="height: 25px; width:25px; margin-bottom:10px; margin-right:10px">
+                                    </a>
+                                {% endif %}
+                                <div class=" badge badge-pill badge-light text-left my-1 pl-3" >
+                                    <small class="fullname-js"> {{ commentaire.user.fullname }} </small>  <br>
                                     <small class="message-js" > {{ commentaire.message }} </small> 
                                 </div>
                                 
                             </div>  
                         {% endfor %}
 
-                        <form method="POST" action="{{path('pin_comment', {'id': pin.id})}}" class="form-comment ">
-                            <div id="commentaire">
-                                <div class="form-group"><label for="message">Message</label><textarea id="message" name="message" required   class="form-control" ></textarea>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary mb-3" type="submit" class="js-comment">Commenter</button>
-                                
-                        </form>
+                        {% include "commentaire/_form-commentaire.html.twig" %}
                     </div>
                 </div>
                 
