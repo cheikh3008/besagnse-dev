@@ -66,6 +66,8 @@ for (let j = 0; j < form.length; j++) {
                 var input = element.querySelector("textarea");
                 input.value = "";
                 input.focus();
+            } else if (this.readyState == 4 && this.status == 500) {
+                window.alert("Ce champ ne peut pas être vide . ");
             }
         }
         var url = this.getAttribute("action");

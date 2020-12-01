@@ -14,7 +14,15 @@ class CommentaireType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('message', TextareaType::class)
+            ->add('message', TextareaType::class, [
+                'constraints' => [
+                    new NotBlank(
+                        [
+                            'message' => 'Ce champ ne peut pa être vide .'
+                        ]
+                    )
+                ]
+            ])
         ;
     }
 

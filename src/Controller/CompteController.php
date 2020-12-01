@@ -33,11 +33,11 @@ class CompteController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!password_verify($password_upadte->getOldPassword(), $user->getPassword())) {
-                $form->get('oldPassword')->addError(
-                    new FormError("Le mot passe que vous avez tapé est incorrect ")
-                );
-            } else {
+            // if (!password_verify($password_upadte->getOldPassword(), $user->getPassword())) {
+            //     $form->get('oldPassword')->addError(
+            //         new FormError("Le mot passe que vous avez tapé est incorrect ")
+            //     );
+            // } else {
                 $newPassword = $password_upadte->getNewPassword();
                 $hash = $passwordEncoder->encodePassword($user, $newPassword);
                 $user->setPassword($hash);
@@ -45,7 +45,7 @@ class CompteController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
                 return $this->redirectToRoute('app_compte_user', ['id' => $user->getId()]);
-            }
+            //}
         }
 
         return $this->render('compte/password-update.html.twig', [
@@ -61,6 +61,9 @@ class CompteController extends AbstractController
      */
     public function userCompte(PinRepository $pinRepository, int $id, Request $request, ProfilRepository $profilRepository, UserRepository $userRepository)
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
         $profil = new Profil();
         $user = $this->getUser();
         $form = $this->createForm(ProfilType::class, $profil);

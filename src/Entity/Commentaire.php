@@ -23,7 +23,7 @@ class Commentaire
     private $id;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=false)
      * @Assert\NotBlank(message="Le commentaire ne peut être vide .")
      */
     private $message;

@@ -38,6 +38,12 @@ class CommentaireController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $commentaire->setUser($user);
         $commentaire->setPin($pin);
+        if($request->request->get('message') === ''){
+            return $this->json([
+                'code' => 500,
+                'message' => 'Ce champ ne peut pas être vide.',
+            ], 500);
+        }
         $commentaire->setMessage($request->request->get('message'));
         $entityManager->persist($commentaire);
         $entityManager->flush();
