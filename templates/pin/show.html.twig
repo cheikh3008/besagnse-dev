@@ -56,32 +56,47 @@
                             </div>
                         
                         </div>
+                        
+                            
                             {% include "commentaire/_form-commentaire.html.twig" %}
+                        {# <div id="msg">
+                            <div id="remove_sms">
+                                 {% for commentaire in commentaire %}
+                                    {{commentaire.id}}
+                                {% endfor %} 
+                                
+                                <button  id="load_more" data-id = {{ last_commenatire.id }} >Load more</button>
+                            </div>
+                        </div> #}
+                       
+                        
+                        
                         {% for commentaire in commentaire %}
-                        <div >
-                            {% if pin.user.profils | length > 0%}
+                            <div class="msg">
+                                {% if pin.user.profils | length > 0%}
+                                
                                     {% for profil in commentaire.user.profils %}
-                                            <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
-                                                <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 25px; width:25px; margin-bottom:10px; margin-right:10px">
-                                            </a>
+                                        <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
+                                            <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 25px; width:25px; margin-bottom:10px; margin-right:10px">
+                                        </a>
                                         {% endfor %}
                                     {% else %}
-                                    <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
-                                        <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
-                                        style="height: 25px; width:25px; margin-bottom:10px; margin-right:10px">
-                                    </a>
+                                        <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
+                                            <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
+                                            style="height: 25px; width:25px; margin-bottom:10px; margin-right:10px">
+                                        </a>
                                 {% endif %}
-                            <div class="badge badge-pill badge-light mt-2 mb-2  text-left">
-                                <small class="font-weight-bold mx-2 my-2" style="font-size: 1em;">{{commentaire.user.fullname}}</small><br>
-                                <small class="small  text-small mx-2 my-2" style="font-size: 1em;">
-                                    {{commentaire.message}}
-                                </small>
-                            </div><br>
-                            
-                        </div>
+                                <div class="badge badge-pill badge-light mt-2 mb-2  text-left">
+                                    <small class="font-weight-bold mx-2 my-2" style="font-size: 1em;">{{commentaire.user.fullname}}</small><br>
+                                    <small class="small  text-small mx-2 my-2" style="font-size: 1em;">
+                                        {{commentaire.message}}
+                                    </small>
+                                </div><br>
+                            </div>    
                         {% endfor %}
-                        </div>
-                            
+                        <button  id="load_more" class="btn btn-link" >Afficher plus </button>
+                    </div>
+                        
                     <div class="dropdown  ">
                         <button class="" style="border: none; background-color:#ffffff;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-h  mt-4 " ></i>

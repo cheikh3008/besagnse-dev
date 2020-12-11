@@ -61,9 +61,7 @@ class CompteController extends AbstractController
      */
     public function userCompte(PinRepository $pinRepository, int $id, Request $request, ProfilRepository $profilRepository, UserRepository $userRepository)
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login');
-        }
+        
         $profil = new Profil();
         $user = $this->getUser();
         $form = $this->createForm(ProfilType::class, $profil);

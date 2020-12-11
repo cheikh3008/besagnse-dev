@@ -28,7 +28,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="Ce champ ne peut pa être vide .")
      */
     private $username;
 

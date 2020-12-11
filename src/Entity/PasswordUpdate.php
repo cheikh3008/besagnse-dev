@@ -5,8 +5,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PasswordUpdate
 {
-    
-
 
     private $oldPassword;
 

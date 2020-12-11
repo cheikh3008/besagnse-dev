@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class EditProfileType extends AbstractType
 {
@@ -16,8 +18,7 @@ class EditProfileType extends AbstractType
         $builder
             ->add('prenom')
             ->add('nom')
-            ->add('username')
-            ->add('telephone')
+            ->add('telephone', NumberType::class)
             ->add('nomEntreprise')
             ->add('adresse')
             ->add('role', EntityType::class, [

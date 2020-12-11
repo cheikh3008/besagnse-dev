@@ -27,7 +27,7 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('prenom', TextType::class, ['attr' => ['placeholder' => 'Tapez votre prénom ']])
             ->add('nom', TextType::class, ['attr' => ['placeholder' => 'Tapez votre nom ']])
-            ->add('username', TextType::class, ['attr' => ['placeholder' => 'Tapez votre username ']])
+            // ->add('username', TextType::class, ['attr' => ['placeholder' => 'Tapez votre username ']])
             ->add('telephone', NumberType::class, ['attr' => ['placeholder' => 'Tapez votre numéro de téléphone ']])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,

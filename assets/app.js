@@ -57,8 +57,8 @@ for (let j = 0; j < form.length; j++) {
                     input.focus();
                     setInterval(function(){
                         location.reload();
-                    }, 100)
-                    
+                        //getMessage()
+                    }, 600)
                 };
                 
             }else if (this.readyState == 4 && this.status == 403) {
@@ -76,3 +76,81 @@ for (let j = 0; j < form.length; j++) {
         xhr.send(data_form);
     });
 }
+// Afficher les commentaires d'un pin par lot de 3
+
+$(function () {
+    if($(".msg").length == 0){
+        $("#load_more").remove()
+    }
+    $(".msg").slice(3).hide()
+    $("#load_more").on('click', function (e) {
+        e.preventDefault()
+        $(".msg:hidden").slice(0,3).slideDown()
+        if($(".msg:hidden").length == 0){
+            $("#load_more").remove()
+            
+        }
+    })
+})
+
+
+// Afficher tous les commentaires d'un pin par lot de 3
+// var msg = $("[class*='msg-index-']")
+// console.log( msg);
+// // for (let i = 0; i < msg.length; i++) {
+// //     const element = msg[i];
+// //     console.log( element);
+// // }
+$("[class*='msg-index-']").slice(3).hide()
+$(document).on('click', '#load_more_index', function (e) {
+    e.preventDefault()
+    var id = $(this).data('id')
+    $(".msg-index-"+ id+ ":hidden").slice(0, 3).slideDown()
+    if($(".msg-index-"+ id+ ":hidden").length == 0){
+       $(this).remove()
+        
+    }
+    
+})
+
+
+// $(function () {
+//     $(".msg-index-23").slice(3).hide()
+//     $("#load_more_index").data('id').on('click', function (e) {
+//         e.preventDefault
+//         var id = $("#load_more_index").data('id')
+
+//         $(".msg-index-"+ id+ ":hidden").slice(0, 3).slideDown()
+//         if($(".msg-index-"+ id+ ":hidden").length == 0){
+//             $("#load_more_index").remove()
+        
+//         }
+//     })
+// })
+
+
+// $(document).ready(function (){
+//     getMessage()
+// })
+// getMessage()
+// function getMessage(){
+//     $.ajax({
+//         url: '',
+//         type: 'GET',
+//         dataType: 'json',
+//         async: true,
+//         success: function(data){
+//             for (let i = 0; i < data.length; i++) {
+//                 const element = data[i];
+//                 var e = $('<div class="badge badge-pill badge-light mt-2 mb-2 text-left"><small id= "fullname" class=""></small> <br> <small id="message"></small></div><br>')
+//                 $("#fullname", e).html(element['fullname'])
+//                 $("#message", e).html(element['message'])
+//                 $("#msg").append(e)
+//                 //console.log(e);
+//             }
+//         }, error : function (error) {
+//             console.log(error);
+//         }
+//     })
+// }
+

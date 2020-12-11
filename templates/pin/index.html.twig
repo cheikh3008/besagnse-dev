@@ -63,10 +63,14 @@
                         </span>
                         
                     </div>
-                    
                     <div class="mx-4 ">
+                       {# {% for item in pin.commentaire.snapshot %}
+                           <pre>
+                               {{ dump(item.id) }}
+                           </pre>
+                       {% endfor %} #}
                         {% for commentaire in pin.commentaire %}
-                            <div class="commentaires align-items-center ">
+                            <div class="msg-index-{{pin.id}} "  data-id = {{pin.id}} >
                                 {% if pin.user.profils | length > 0%}
                                     {% for profil in commentaire.user.profils %}
                                             <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
@@ -83,10 +87,10 @@
                                     <small class="fullname-js"> {{ commentaire.user.fullname }} </small>  <br>
                                     <small class="message-js" > {{ commentaire.message }} </small> 
                                 </div>
-                                
-                            </div>  
+                            </div>    
+                            
                         {% endfor %}
-
+                        <button  id="load_more_index" data-id = {{pin.id}} class="btn btn-link" >Afficher plus </button>
                         {% include "commentaire/_form-commentaire.html.twig" %}
                     </div>
                 </div>

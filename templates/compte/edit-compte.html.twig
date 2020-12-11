@@ -1,21 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Création de compte
+{% block title %}Modification de profil
 {% endblock %}
 
 {% block body %}
-	{% for flashError in app.flashes('verify_email_error') %}
-		<div class="alert alert-danger" role="alert">{{ flashError }}</div>
-	{% endfor %}
 	<div class="container">
 		<div class="alert alert-secondary">
 			<div class="alert-heading">
-				<h1 class="mt-3 mb-3  display-5 text-muted text-center ">Modification de profil</h1>
+				<h1 class="mt-3 mb-3  display-5 text-muted text-center ">Modifier le profil</h1>
 				<hr>
 				<div class="row ">
 					<div class="col-md-6 img-form">
-						<img src="{{asset('images/imageformulaire.png')}}" width="480px" class="img-fluid" alt"image de
-						                        formulaire">
+						<img src="{{asset('images/imageformulaire.png')}}" width="480px" class="img-fluid" alt"image deformulaire">
 					</div>
 					<div class="col-md-6 form-ins mt-3">
 						{{ form_start(registrationForm , {attr: {'novalidate': 'novalidate'}}) }}
@@ -33,30 +29,19 @@
 								{{ form_row(registrationForm.telephone) }}
 							</div>
 							<div class="col-sm-1 col-md-6">
-								{{ form_row(registrationForm.username) }}
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="col-sm-1 col-md-6">
 								{{ form_row(registrationForm.nomEntreprise) }}
 
 							</div>
-
-							<div class="col-sm-1 col-md-6">
-								{{ form_row(registrationForm.role) }}
-							</div>
-
 						</div>
 
 						<div class="row">
 							<div class="col-sm-1 col-md-6">
-								{{ form_row(registrationForm.adresse) }}
+								{{ form_row(registrationForm.role) }}
 							</div>
 							<div class="col-sm-1 col-md-6">
-								<label></label>
-								<button type="submit" class="mt-2 btn btn-primary btn-block">Register</button>
+								{{ form_row(registrationForm.adresse) }}
 							</div>
+							<button type="submit" class="mx-3 mt-2 btn btn-primary btn-block">Register</button>
 						</div>
 
 						{{ form_end(registrationForm) }}

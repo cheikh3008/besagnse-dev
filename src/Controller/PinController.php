@@ -37,23 +37,8 @@ class PinController extends AbstractController
     public function index( PinRepository $pinRepository, Request $request): Response
     {
         
-        // $data =  $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'));
-        // if ($request->isXmlHttpRequest()) {
-        //     $jsonData = array();
-        //     $idx = 0;
-        //     foreach ($data as $values) {
-        //         $temp = array(
-        //             'fullname' => $values->getUser()->getPrenom().' '. $values->getUser()->getNom(),
-        //             'message' => $values->getMessage(),
-        //             'pin' => $values->getPin()->getId()
-        //         );
-        //         $jsonData[$idx++] = $temp;
-        //     }
-        //     return new JsonResponse($jsonData);
-        // } 
-
         return $this->render('pin/index.html.twig', [
-            'pins' => $pinRepository->findBy(array(), array('updatedAt' => 'DESC')),
+            'pins' => $pinRepository->findBy(array(), array('updatedAt' => 'desc')),
         ]);
     }
 
@@ -88,18 +73,18 @@ class PinController extends AbstractController
     /**
      * @Route("pin/{id}", name="pin_show", methods={"GET","POST"})
      */
-    public function show(Pin $pin, CommentaireRepository $commentaireRepository): Response
+    public function show(Pin $pin ,CommentaireRepository $commentaireRepository): Response
     {
         
         return $this->render('pin/show.html.twig', [
             'pin'  => $pin,
-            'commentaire' => $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc'), 3),
+            'commentaire' => $commentaireRepository->findBy(array('pin' => $pin), array('updatedAt' => 'desc')),
         ]);
     }
 
     /**
      * @Route("pin/{id}/edit", name="pin_edit", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_TAILLEUR' and user === pin.getUser())")
+     * @Security("is_granted('ROLE_TAILLEUR') and user === pin.getUser()")
      */
     public function edit(Request $request, Pin $pin): Response
     {
@@ -121,7 +106,7 @@ class PinController extends AbstractController
 
     /**
      * @Route("/{id}", name="pin_delete", methods={"DELETE"})
-     * @Security("is_granted('ROLE_TAILLEUR' and user === pin.getUser())")
+     * @Security("is_granted('ROLE_TAILLEUR') and user === pin.getUser()")
      */
     public function delete(Request $request, Pin $pin): Response
     {

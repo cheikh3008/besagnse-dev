@@ -53,7 +53,7 @@ class Pin
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="pin")
+     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="pin", cascade={"remove"})
      */
     private $commentaire;
 
@@ -63,7 +63,7 @@ class Pin
     private $imageName;
 
     /**
-     * @ORM\OneToMany(targetEntity=Jaime::class, mappedBy="pin")
+     * @ORM\OneToMany(targetEntity=Jaime::class, mappedBy="pin", cascade={"remove"})
      */
     private $jaimes;
 
