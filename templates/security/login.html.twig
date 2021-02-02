@@ -23,6 +23,8 @@
 							<input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control " autofocus placeholder="Tapez le numéro de téléphone">
 							<label for="inputPassword" class="mt-2 text-muted  ">Password</label>
 							<input type="password" name="password" id="inputPassword" placeholder="Tapez le mot de passe" class="form-control">
+							<label class="sr-only" for="nom">Nom</label>
+							
 
 							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 							<div class="custom-control custom-checkbox mt-3">

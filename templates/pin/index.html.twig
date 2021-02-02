@@ -2,107 +2,46 @@
     {% block header %}
         {% include "partials/banniere/banniere.html.twig" %}
     {% endblock header %}
-    {% block body %}
-    <div >
-        
-        <div class="container pt-4">
-        {% for pin in pins %}
-            <div class=" col-md-6 mx-auto ">
-                <div class="card card_pin_show  " >
-                    <div class="card-body ">
-                        <div>
-                            <div class="dropdown">
-                                <button class="float-right" style="border: none; background-color:#ffffff;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-h float-right mt-2" ></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="{{ path('pin_edit', {'id': pin.id}) }}">Modifier</a>
-                                    <div class="ml-2">{{ include('pin/_delete_form.html.twig') }}</div>
-                                </div>
-                            </div>
-                            {% if pin.user.profils | length > 0%}
-                                {% for profil in pin.user.profils %}
-                                    <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
-                                        <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 30px; width:30px">
-                                    </a>
-                                {% endfor %}
-                            {% else %}
-                            <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
-                                <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
-                                style="height: 30px; width:30px">
-                            </a>
-                            {% endif %}
-                            
-                                <span class="card-text pl-2">
-                                    <small class="text-muted">
-                                        Publié le {{pin.updatedAt| date('d/m/Y')}} à {{pin.updatedAt| date('H:i')}}
-                                    </small>
-                                </span>
-                            
-                            <h4 class="card-title ">{{pin.titre}}</h4>
-                            <p class="card-text">{{pin.description}}</p>
-                            
-                            <a href="{{ path('pin_show', {'id': pin.id}) }}">
-                               <img src=" {{vich_uploader_asset(pin)}} " class="bd-placeholder-img card-img-top shadow img-fluid" alt=" {{pin.titre}} " width="100%" height="400" role="img">
-                            </a>
-                        </div>
-                        <hr>
-                    </div>
-                    <div class="pb-2  mx-4 d-flex justify-content-between">
-                        <a href=" {{path('pin_like', {'id': pin.id})}} " class="btn btn-link js-like ">
-                            {% if app.user and pin.isLikedByUser(app.user) %}
-                                <i class="fas fa-thumbs-up"></i>
-                            {% else %}
-                                <i class="far fa-thumbs-up"></i>
-                            {% endif %}
-                            <span class="js-likes"> {{pin.jaimes | length > 0}} </span>
-                            <span class="js-label">J'aime</span>
-                        </a>
-                        <span  class="btn btn-link js-comment ">
-                            <i class="far fa-comment"><span class="pl-2 js-comment">{{pin.commentaire | length }} Commenter</span></i>
-                        </span>
-                        
-                    </div>
-                    <div class="mx-4 ">
-                       {# {% for item in pin.commentaire.snapshot %}
-                           <pre>
-                               {{ dump(item.id) }}
-                           </pre>
-                       {% endfor %} #}
-                        {% for commentaire in pin.commentaire %}
-                            <div class="msg-index-{{pin.id}} "  data-id = {{pin.id}} >
-                                {% if pin.user.profils | length > 0%}
-                                    {% for profil in commentaire.user.profils %}
-                                            <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
-                                                <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 25px; width:25px; margin-bottom:10px; margin-right:10px">
-                                            </a>
-                                        {% endfor %}
-                                    {% else %}
-                                    <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
-                                        <img src=" {{ asset('/images/defaut-avatar.png') }} " class="rounded-circle " alt="avatar"
-                                        style="height: 25px; width:25px; margin-bottom:10px; margin-right:10px">
-                                    </a>
-                                {% endif %}
-                                <div class=" badge badge-pill badge-light text-left my-1 pl-3" >
-                                    <small class="fullname-js"> {{ commentaire.user.fullname }} </small>  <br>
-                                    <small class="message-js" > {{ commentaire.message }} </small> 
-                                </div>
-                            </div>    
-                            
-                        {% endfor %}
-                        <button  id="load_more_index" data-id = {{pin.id}} class="btn btn-link" >Afficher plus </button>
-                        {% include "commentaire/_form-commentaire.html.twig" %}
-                    </div>
-                </div>
-                
-            </div>
-           
-        {% else %}
-       
-            <p>no records found</p>
-            
-        {% endfor %} 
+{% block body %}
     
-        </div>
+<div class="container-fluid">
+    <div class="grid mt-2">
+        {% for pin in pins %}
+            <div class="block-img overflow-hidden">
+                <a href="{{ path('pin_show', {'id': pin.id}) }}" >
+                <img src=" {{vich_uploader_asset(pin)}} " class="img-fluid image_pin" alt=" {{pin.titre}} " role="img">
+            </a>
+            {% if pin.user.profils | length > 0 %}
+                {% for profil in pin.user.profils %}
+                <div class="pin-card-contenu d-flex justify-content-between align-items-center">
+                    <span class="left">
+                        <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
+                            <img src=" {{vich_uploader_asset(profil)}} " class="rounded-circle " alt="avatar" style="height: 30px; width:30px"> {{ pin.user.fullName }}
+                        </a>
+                    </span>
+                    
+                    <span class="right">
+                        {{pin.jaimes | length }} <i class="far fa-thumbs-up"></i>  &nbsp;{{pin.commentaire | length }} <i class="far fa-comment"></i>
+                    </span>
+                </div>      
+                    
+                {% endfor %}
+            {% else %}
+                <div class="pin-card-contenu d-flex justify-content-between align-items-center">
+                    <span class="left">
+                        <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
+                            <img src=" {{ asset('/images/defaut-avatar.png') }}  " class="rounded-circle " alt="avatar" style="height: 30px; width:30px"> {{ pin.user.fullName }}
+                        </a>
+                    </span>
+                    
+                    <span class="right">
+                        {{pin.jaimes | length }} <i class="far fa-thumbs-up"></i>  &nbsp;{{pin.commentaire | length }} <i class="far fa-comment"></i>
+                    </span>
+                </div>
+            {% endif %}
+            </div>
+        {% endfor %}
     </div>
+</div>   
+
 {% endblock body %}

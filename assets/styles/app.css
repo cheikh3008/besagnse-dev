@@ -28,7 +28,7 @@ body{
 .navbar{
   width: 100%;
   padding: 5px;
-  
+  position: relative;
 }
 .navbar-brand{
   color: #ffffff !important;
@@ -47,7 +47,7 @@ body{
 }
 .navbar-nav .profil{
   text-decoration: none !important;
-   color: #000000 !important;
+  color: #000000 !important;
   transition: 0.5s  ease-in-out;
 }
 .navbar-nav .profil:hover{
@@ -59,20 +59,86 @@ body{
   color: #413f3f !important;
   
 }
-/* .card  {
-  width: 100%;
-  height: 500px;
-  margin-bottom: 20px;
-} */
-.card_pin_show{
-  width: 100%;
-  height:100%;
+.grid {
+  line-height: 30px;
+  column-count: 3;
 }
-
-.pin-img {
- transition: transform 0.3s ease-out;
+.grid .image_pin{
+  width: 100% !important;
+  height: auto !important;
+  padding: 7px 0;
+  transition: transform 0.3s ease-out;
   
 }
-.pin-img .card-img-top:hover{
-  transform: scale(1.075)!important;
+div.block-img{
+  overflow: hidden;
+}
+.grid .image_pin:hover{
+  transform: scale(1.05);
+}
+div.pin-card-contenu span{
+  opacity: 0;
+  height: 40px;
+  margin-top: -85px;
+  padding: 5px 20px;
+  color: #ffffff;
+  font-weight: 200;
+}
+span.left {
+  width: 70%;
+}
+
+span.right {
+  width: 30%;
+}
+span > a{
+  text-decoration: none !important;
+  color: #ffffff !important;
+  font-size: 1.3em !important;
+}
+@media screen and (max-width: 992px){
+    
+  body{
+      background-color: blue !important;
+  }
+  .grid{
+      line-height: 20px;
+      column-count: 2;
+  }
+}
+
+@media screen and (max-width: 764px){
+    
+  body{
+      background-color: green !important;
+  }
+  .grid{
+      line-height: 20px;
+      column-count: 2;
+  }
+  div.pin-card-contenu span {
+    opacity: 1 !important;
+    padding: 5px !important;
+  }
+  span.right i {
+    margin-top: 5px !important;
+  }
+  span > a {
+    text-decoration: none !important;
+    color: #ffffff !important;
+    font-size: 1em !important;
+  }
+  
+}
+@media screen and (max-width: 576px){
+  div.pin-card-contenu span{
+    opacity: 1 !important;
+  }
+  body{
+      background-color: red !important;
+  }
+  .grid{
+      line-height: 10px;
+      column-count: 1;
+  }
 }

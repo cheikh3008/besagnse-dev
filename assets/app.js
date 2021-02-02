@@ -114,43 +114,75 @@ $(document).on('click', '#load_more_index', function (e) {
 })
 
 
+// selector string as first argument
 // $(function () {
-//     $(".msg-index-23").slice(3).hide()
+    //     $(".msg-index-23").slice(3).hide()
 //     $("#load_more_index").data('id').on('click', function (e) {
-//         e.preventDefault
-//         var id = $("#load_more_index").data('id')
+    //         e.preventDefault
+    //         var id = $("#load_more_index").data('id')
 
-//         $(".msg-index-"+ id+ ":hidden").slice(0, 3).slideDown()
-//         if($(".msg-index-"+ id+ ":hidden").length == 0){
-//             $("#load_more_index").remove()
+    //         $(".msg-index-"+ id+ ":hidden").slice(0, 3).slideDown()
+    //         if($(".msg-index-"+ id+ ":hidden").length == 0){
+        //             $("#load_more_index").remove()
         
-//         }
-//     })
-// })
-
-
-// $(document).ready(function (){
-//     getMessage()
-// })
-// getMessage()
-// function getMessage(){
-//     $.ajax({
+        //         }
+        //     })
+        // })
+        
+        
+        // $(document).ready(function (){
+            //     getMessage()
+            // })
+            // getMessage()
+            // function getMessage(){
+                //     $.ajax({
 //         url: '',
 //         type: 'GET',
 //         dataType: 'json',
 //         async: true,
 //         success: function(data){
-//             for (let i = 0; i < data.length; i++) {
-//                 const element = data[i];
-//                 var e = $('<div class="badge badge-pill badge-light mt-2 mb-2 text-left"><small id= "fullname" class=""></small> <br> <small id="message"></small></div><br>')
-//                 $("#fullname", e).html(element['fullname'])
-//                 $("#message", e).html(element['message'])
-//                 $("#msg").append(e)
-//                 //console.log(e);
-//             }
-//         }, error : function (error) {
-//             console.log(error);
+    //             for (let i = 0; i < data.length; i++) {
+        //                 const element = data[i];
+        //                 var e = $('<div class="badge badge-pill badge-light mt-2 mb-2 text-left"><small id= "fullname" class=""></small> <br> <small id="message"></small></div><br>')
+        //                 $("#fullname", e).html(element['fullname'])
+        //                 $("#message", e).html(element['message'])
+        //                 $("#msg").append(e)
+        //                 //console.log(e);
+        //             }
+        //         }, error : function (error) {
+            //             console.log(error);
 //         }
 //     })
 // }
+
+// Au survol des image on affiche le profil - nom -jaime -commentaire
+// $(function () {
+//     $(".grid .image_pin").mouseover(function(){
+//         $(".pin-card-contenu span").each(function () {
+//             $(this).css("display","block");
+//         })
+//     });
+//     $(".grid .image_pin").mouseout(function(){
+//         $(".pin-card-contenu span").each(function () {
+//             $(this).css("display","none");
+//         })
+  
+//     });
+// })
+
+
+const pin_show = document.querySelectorAll(".block-img");
+pin_show.forEach(function (pin) {
+    pin.addEventListener('mouseenter', function () {
+        this.querySelector(".left").style.transition = "all 1s ease-in-out";
+        this.querySelector(".right").style.transition = "all 1s ease-in-out";
+        this.querySelector(".left ").style.opacity = 1;
+        this.querySelector(".right ").style.opacity = 1;
+    });
+    pin.addEventListener('mouseout', function () {
+        console.log(this);
+        this.querySelector(".left ").style.opacity = 0;
+        this.querySelector(".right ").style.opacity = 0;
+    })
+})
 
