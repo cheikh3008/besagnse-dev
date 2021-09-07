@@ -60,9 +60,11 @@
                     {% else %}
                         <div class="pin-card-contenu d-flex justify-content-between align-items-center">
                             <span>
+                                {% if user.key is defined %}
                                 <a href=" {{ path('app_compte_user', { id: pin.user.id }) }} ">
                                     <img src=" {{ asset('/images/defaut-avatar.png') }}  " class="rounded-circle " alt="avatar" style="height: 30px; width:30px"> {{ pin.user.fullName }}
                                 </a>
+                                {% endif %}
                             </span>
                             
                             <span>
