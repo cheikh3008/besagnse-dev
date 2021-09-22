@@ -109,9 +109,6 @@ span > a{
 
 @media screen and (max-width: 764px){
     
-  body{
-      background-color: green !important;
-  }
   .grid{
       line-height: 20px;
       column-count: 2;
