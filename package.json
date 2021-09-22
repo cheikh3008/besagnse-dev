@@ -17,7 +17,8 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.1",
         "axios": "^0.21.0",
-        "bootstrap": "^4.5.3",
+        "bootstrap": "^4.6.0",
+        "bootstrap4": "0.0.1-security",
         "jquery": "^3.5.1",
         "node-sass": "^5.0.0",
         "popper.js": "^1.16.1",
