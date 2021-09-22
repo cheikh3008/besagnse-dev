@@ -14,9 +14,9 @@
         "watch": "encore dev --watch",
         "build": "encore production --progress"
     },
-    "engines":{
+    "engines": {
         "node": "14.17.*",
-        "npm":"6.14.*"
+        "npm": "6.14.*"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.1",
