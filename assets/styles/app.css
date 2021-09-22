@@ -134,9 +134,6 @@ span > a{
   div.pin-card-contenu span{
     opacity: 1 !important;
   }
-  body{
-      background-color: red !important;
-  }
   .grid{
       line-height: 10px;
       column-count: 1;
