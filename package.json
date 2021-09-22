@@ -1,7 +1,6 @@
 {
     "devDependencies": {
         "@symfony/webpack-encore": "^0.31.1",
-        "boostrap": "^4.5.3 ",
         "core-js": "^3.18.0",
         "regenerator-runtime": "^0.13.9",
         "webpack-notifier": "^1.13.0"
@@ -21,8 +20,6 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
         "axios": "^0.21.4",
-        "bootstrap": "^4.6.0",
-        "bootstrap4": "0.0.1-security",
         "jquery": "^3.6.0",
         "node-sass": "^5.0.0",
         "popper.js": "^1.16.1",
