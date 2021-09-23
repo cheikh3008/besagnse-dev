@@ -20,7 +20,8 @@
 ###< liip/imagine-bundle ###
 
 ###> image de profil - pin ###
-
+/public/images/pins
+/public/images/profils
 ###< image de profil - pin ###
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
